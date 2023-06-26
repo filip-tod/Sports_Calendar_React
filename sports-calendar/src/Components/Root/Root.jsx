@@ -4,7 +4,7 @@ import NavBar from "../MainNavigation/NavBar";
 
 function RootLayout(){
   return <>
-  <NavBar/>
+     <NavBar/>
      <Outlet />
         </>;
 };

@@ -22,20 +22,22 @@ function Example(props) {
   return (
     <div>
       <Navbar color="light" light expand="md">
-        <NavbarBrand > 
-        <Link to ="">Sports Calendar</Link>
+        <NavbarBrand as={Link} to="/">
+          Sports Calendar
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink>  <Link to ="">Home</Link></NavLink>
+              <NavLink tag={Link} to="/">
+                Home
+              </NavLink>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
                 Options
               </DropdownToggle>
-              <DropdownMenu right>
+              <DropdownMenu end>
                 <DropdownItem>Log-out</DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem>account manager</DropdownItem>
@@ -45,12 +47,18 @@ function Example(props) {
               <DropdownToggle nav caret>
                 Admin options
               </DropdownToggle>
-              <DropdownMenu right>
-           <Link to ="/City">Go to City</Link>
+              <DropdownMenu end>
+                <DropdownItem tag={Link} to="/City">
+                  Go to City
+                </DropdownItem>
                 <DropdownItem divider />
-                <Link to ="/County">Go To County</Link>
+                <DropdownItem tag={Link} to="/County">
+                  Go To County
+                </DropdownItem>
                 <DropdownItem divider />
-                <Link to ="/Location">Go To Location</Link>
+                <DropdownItem tag={Link} to="/Location">
+                  Go To Location
+                </DropdownItem>
                 <DropdownItem divider />
               </DropdownMenu>
             </UncontrolledDropdown>
