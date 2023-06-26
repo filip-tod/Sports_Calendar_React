@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import CityService from '../../Services/CityService';
 
 const City = () => {
   const [cities, setCities] = useState([]);
@@ -7,19 +8,28 @@ const City = () => {
   const [dataFetched, setDataFetched] = useState(false);
 
   const fetchData = () => {
-    if (!dataFetched) {
-      axios
-        .get('https://localhost:44380/api/City')
-        .then(response => {
-          const { data } = response;
+    CityService.getCitys().then((response)=>{
+      const { data } = response;
           setCities(data.map(city => city.Name));
           console.log(response.data);
           setDataFetched(true);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    }
+    }).catch((e)=>{
+      console.log(e);
+    });
+    // if (!dataFetched) {
+    //   axios
+    //     .get('https://localhost:44380/api/City')
+    //     .then(response => {
+    //       const { data } = response;
+    //       setCities(data.map(city => city.Name));
+    //       console.log(response.data);
+    //       setDataFetched(true);
+    //     })
+    //     .catch(error => {
+    //       console.error(error);
+    //     });
+    // }
+
   };
 
   return (
