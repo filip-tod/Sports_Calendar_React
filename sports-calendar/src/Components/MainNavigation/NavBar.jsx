@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../Style/navBar.css';
 import {
   Collapse,
@@ -19,6 +19,16 @@ function Example(props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
+
+  // navigate and logout handle Logout link onClick event
+  const navigate = useNavigate();
+  
+  const logout = () => {
+    
+    localStorage.removeItem('token');
+    //setLoggedIn = false;
+    navigate('/');
+  }
 
   return (
     <div>
