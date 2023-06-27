@@ -22,7 +22,7 @@ function useFetchEventData() {
         setDatesToAddClassTo(eventStartDates);
         setEvents(eventsData);
       } catch (error) {
-        console.log("Error fetching event data:", error);
+        console.log("Error fetching event data: ", error);
       }
     };
 
