@@ -61,6 +61,10 @@ function Example(props) {
                   Go To Location
                 </DropdownItem>
                 <DropdownItem divider />
+                <DropdownItem tag={Link} to="/Placement">
+                  Placements
+                </DropdownItem>
+                <DropdownItem divider />
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
