@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import '../../Style/navBar.css';
 import {
   Collapse,
   Navbar,
@@ -63,6 +64,19 @@ function Example(props) {
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
+          <Nav className="navbar-nav ml-auto disable-flex-grow" navbar>
+            <NavItem>
+              <NavLink className="nav-link" tag={Link} to="/">
+                Login
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink className="nav-link" tag={Link} to="/">
+                Sign Up
+              </NavLink>
+            </NavItem>
+          </Nav>
+  
         </Collapse>
       </Navbar>
     </div>

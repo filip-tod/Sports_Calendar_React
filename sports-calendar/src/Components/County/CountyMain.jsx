@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import CountyGet from './CountyGet';
-import CountyById from './CountyGetById';
-import CountyPost from './CountyPost';
-import CountyPut from './CountyPut';
-import CountyDelete from './CountyDelete';
+import CountyGetById from './CountyById';
+import CountyGetForm from './County';
+
+
+
 
 function CountyDisplay() {
   const [isOpen, setIsOpen] = useState(true);
@@ -20,11 +20,8 @@ function CountyDisplay() {
     {isOpen && (
       <div>
         <h1>County CRUD for ADMIN</h1>
-      <CountyGet/>
-      <CountyById />
-      <CountyPost />
-      <CountyPut />
-      <CountyDelete />
+      <CountyGetById />
+      <CountyGetForm />
       </div>
     )}
   </div>

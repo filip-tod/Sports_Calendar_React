@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import CityService from '../../Services/CityService';
+import CountyService from '../../Services/CountyService';
 
-const UpdateCity = () => {
+const UpdateCounty = () => {
   const { id } = useParams();
-  const [city, setCity] = useState({
+  const [county, setCounty] = useState({
     Id: "",
     Name: "",
     UpdatedByUserId: "0d3fa5c2-684c-4d88-82fd-cea2197c6e86",
@@ -15,19 +15,19 @@ const UpdateCity = () => {
   });
 
   useEffect(() => {
-    CityService.fetchCityById(id)
+    CountyService.fetchCountyById(id)
       .then(response => {
-        const cityData = response.data;
-        setCity(cityData);
+        const countyData = response.data;
+        setCounty(countyData);
       })
       .catch(error => {
         console.error(error);
       });
   }, [id]);
 
-  const handleCityNameChange = event => {
-    setCity(prevCity => ({
-      ...prevCity,
+  const handleCountyNameChange = event => {
+    setCounty(prevCounty => ({
+      ...prevCounty,
       Name: event.target.value
     }));
   };
@@ -35,7 +35,7 @@ const UpdateCity = () => {
   const handleSubmit = event => {
     event.preventDefault();
 
-    CityService.updateCity(id, city)
+    CountyService.updateCounty(id, county)
       .then(response => {
         console.log(response.data);
         // Handle successful update
@@ -48,11 +48,11 @@ const UpdateCity = () => {
 
   return (
     <div>
-      <h3>Update City</h3>
+      <h3>Update County</h3>
       <form onSubmit={handleSubmit}>
         <label>
-          City Name:
-          <input type="text" value={city.Name} onChange={handleCityNameChange} />
+          County Name:
+          <input type="text" value={county.Name} onChange={handleCountyNameChange} />
         </label>
         <button type="submit">Update</button>
       </form>
@@ -60,4 +60,4 @@ const UpdateCity = () => {
   );
 };
 
-export default UpdateCity;
+export default UpdateCounty;
