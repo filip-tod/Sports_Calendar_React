@@ -30,7 +30,7 @@ function Example(props) {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink tag={Link} to="/">
+              <NavLink tag={Link} to="/Home">
                 Home
               </NavLink>
             </NavItem>
@@ -63,6 +63,9 @@ function Example(props) {
                 <DropdownItem divider />
               </DropdownMenu>
             </UncontrolledDropdown>
+            <NavItem>
+              <NavLink tag={Link} to="/Event">Calendar</NavLink>
+            </NavItem>
           </Nav>
           <Nav className="navbar-nav ml-auto disable-flex-grow" navbar>
             <NavItem>

@@ -1,10 +1,11 @@
 import React from 'react';
+import Calendar from 'react-calendar';
 
 
 function HomePage() {
   return (
     <div>
-      <h1>Welcome to the Homepage</h1>
+      <Calendar/>
     </div>
   );
 }
