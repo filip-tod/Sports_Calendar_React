@@ -1,29 +1,24 @@
-import http from "../http-common";
+import api from "../http-common";
 
 const getUsers = () => {
-  return http.get("/User");
+  return api.get("/User");
 };
 
 const getUser = (id) => {
-  return http.get(`/User/${id}`);
-};
-
-const createUser = (user) => {
-  return http.post("/User", user);
+  return api.get(`/User/${id}`);
 };
 
 const updateUser = (id, user) => {
-  return http.put(`/User/${id}`, user);
+  return api.put(`/User/${id}`, user);
 };
 
 const removeUser = (id) => {
-  return http.delete(`/User/${id}`);
+  return api.delete(`/User/${id}`);
 };
 
 const UserService = {
   getUsers,
   getUser,
-  createUser,
   updateUser,
   removeUser,
 };

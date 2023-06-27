@@ -1,5 +1,6 @@
+
 const registerUser = (user) => {
-  return http.post("/Register", user);
+  return http.post("/signup", user);
 };
 
 const RegisterService = {
