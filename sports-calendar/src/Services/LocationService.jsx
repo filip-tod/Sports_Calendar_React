@@ -24,7 +24,7 @@ const deleteLocation = (id) => {
 };
 
 const fetchCityById = (id) => {
-  return http.get(`/City/${id}`);
+  return api.get(`/City/${id}`);
 };
 
  
