@@ -21,6 +21,7 @@ import "react-calendar/dist/Calendar.css";
 import "./Components/HomePage/calendarStyle.css";
 import Review from './Components/Review/Review';
 import PlacementDisplay from './Components/Placement/PlacementMain';
+import Users from './Components/Users/Users';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(
@@ -60,6 +61,7 @@ function App() {
         { path: 'City', element: <CityDisplay /> },
         { path: 'County', element: <CountyDisplay /> },
         { path: 'Location', element: <LocationDisplay /> },
+        { path: '/Users', element: <Users /> },
         { path: 'update-city/:id', element: <CityPut /> },
         { path: 'update-county/:id', element: <UpdateCounty /> },
         { path: 'update-location/:id', element: <UpdateLocation /> },
