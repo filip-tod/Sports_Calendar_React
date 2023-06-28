@@ -22,12 +22,12 @@ function App() {
   const router = createBrowserRouter([
     {
       path: '',
-      element: <RootLayout loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>,
+      element: <RootLayout loggedIn={loggedIn} setLoggedIn={setLoggedIn} />,
       children: [
         { path: '', element: <Home /> },
         { path: '/', element: <Home /> },
-        { path: '/login', element: <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>},
-        { path: '/register', element: <UserRegister />},
+        { path: '/login', element: <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} /> },
+        { path: '/register', element: <UserRegister /> },
         { path: 'City', element: <CityDisplay /> },
         { path: 'County', element: <CountyDisplay /> },
         { path: 'Location', element: <LocationDisplay /> },
@@ -37,6 +37,11 @@ function App() {
       ],
     },
   ]);
+
+  window.onbeforeunload = function () {
+    localStorage.removeItem('token');
+    return '';
+  };
 
   return <RouterProvider router={router} />;
 }
