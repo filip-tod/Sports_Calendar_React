@@ -1,23 +1,23 @@
-import http from "../http-common";
+import api from "../http-common";
 
 const getPlacements = () => {
-  return http.get("/Placement");
+  return api.get("/Placement");
 };
 
 const getPlacement = (id) => {
-  return http.get(`/Placement/${id}`);
+  return api.get(`/Placement/${id}`);
 };
 
 const createPlacement = (placement) => {
-  return http.post("/Placement", placement);
+  return api.post("/Placement", placement);
 };
 
 const updatePlacement = (id, placement) => {
-  return http.put(`/Placement/${id}`, placement);
+  return api.put(`/Placement/${id}`, placement);
 };
 
 const removePlacement = (id) => {
-  return http.delete(`/Placement/${id}`);
+  return api.delete(`/Placement/${id}`);
 };
 
 const PlacementService = {

@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "../MainNavigation/NavBar";
 
-
-function RootLayout(){
+function RootLayout(props){
+  
   return <>
-     <NavBar/>
+     <NavBar setLoggedIn={ props.setLoggedIn } loggedIn={ props.loggedIn }/>
      <Outlet />
         </>;
 };

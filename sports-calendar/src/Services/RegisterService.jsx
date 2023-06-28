@@ -1,5 +1,7 @@
+import api from "../http-common";
+
 const registerUser = (user) => {
-  return http.post("/Register", user);
+  return api.post("/signup", user);
 };
 
 const RegisterService = {

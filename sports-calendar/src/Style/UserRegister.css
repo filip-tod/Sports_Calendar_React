@@ -1,0 +1,11 @@
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.register-form {
+    max-width: 400px;
+    width: 100%;
+}

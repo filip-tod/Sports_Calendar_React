@@ -1,5 +1,7 @@
+import api from "../http-common";
+
 const getRoles = () => {
-  return http.get("/Role");
+  return api.get("/Role");
 };
 
 const RoleService = {

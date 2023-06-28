@@ -1,7 +1,7 @@
-import http from "../http-common";
+import api from "../http-common";
 
 const getReviews = (pageNumber = 1, pageSize = 10, sortOrder = 'DESC', orderBy = 'Rating') => {
-  return http.get("/Review", {
+  return api.get("/Review", {
     params: {
       pageNumber,
       pageSize,
@@ -13,19 +13,19 @@ const getReviews = (pageNumber = 1, pageSize = 10, sortOrder = 'DESC', orderBy =
 
 
 const getReview = (id) => {
-  return http.get(`/Review/${id}`);
+  return api.get(`/Review/${id}`);
 };
 
 const createReview = (review) => {
-  return http.post("/Review", review);
+  return api.post("/Review", review);
 };
 
 const updateReview = (id, review) => {
-  return http.put(`/Review/${id}`, review);
+  return api.put(`/Review/${id}`, review);
 };
 
 const removeReview = (id) => {
-  return http.delete(`/Review/${id}`);
+  return api.delete(`/Review/${id}`);
 };
 
 const ReviewService = {
