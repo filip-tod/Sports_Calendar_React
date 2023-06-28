@@ -1,23 +1,23 @@
-import http from "../http-common";
+import api from "../http-common";
 
 const getSports = () => {
-  return http.get("/Sport");
+  return api.get("/Sport");
 };
 
 const getSport = (id) => {
-  return http.get(`/Sport/${id}`);
+  return api.get(`/Sport/${id}`);
 };
 
 const createSport = (sport) => {
-  return http.post("/Sport", sport);
+  return api.post("/Sport", sport);
 };
 
 const updateSport = (id, sport) => {
-  return http.put(`/Sport/${id}`, sport);
+  return api.put(`/Sport/${id}`, sport);
 };
 
 const removeSport = (id) => {
-  return http.delete(`/Sport/${id}`);
+  return api.delete(`/Sport/${id}`);
 };
 
 const SportService = {

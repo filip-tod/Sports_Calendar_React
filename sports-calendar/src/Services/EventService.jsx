@@ -1,23 +1,23 @@
-import http from "../http-common";
+import api from "../http-common";
 
 const getEvents = () => {
-  return http.get("/Event");
+  return api.get("/Event");
 };
 
 const getEvent = (id) => {
-  return http.get(`/Event/${id}`);
+  return api.get(`/Event/${id}`);
 };
 
 const createEvent = (event) => {
-  return http.post("/Event", event);
+  return api.post("/Event", event);
 };
 
 const updateEvent = (id, event) => {
-  return http.put(`/Event/${id}`, event);
+  return api.put(`/Event/${id}`, event);
 };
 
 const removeEvent = (id) => {
-  return http.delete(`/Event/${id}`);
+  return api.delete(`/Event/${id}`);
 };
 
 const EventService = {

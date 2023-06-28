@@ -1,23 +1,23 @@
-import http from "../http-common";
+import api from "../http-common";
 
 const getSponsors = () => {
-  return http.get("/Sponsor");
+  return api.get("/Sponsor");
 };
 
 const getSponsor = (id) => {
-  return http.get(`/Sponsor/${id}`);
+  return api.get(`/Sponsor/${id}`);
 };
 
 const createSponsor = (sponsor) => {
-  return http.post("/Sponsor", sponsor);
+  return api.post("/Sponsor", sponsor);
 };
 
 const updateSponsor = (id, sponsor) => {
-  return http.put(`/Sponsor/${id}`, sponsor);
+  return api.put(`/Sponsor/${id}`, sponsor);
 };
 
 const removeSponsor = (id) => {
-  return http.delete(`/Sponsor/${id}`);
+  return api.delete(`/Sponsor/${id}`);
 };
 
 const SponsorService = {

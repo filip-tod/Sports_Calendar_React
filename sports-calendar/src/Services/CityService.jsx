@@ -1,23 +1,23 @@
-import http from "../http-common";
+import api from "../http-common";
 
 const getCitys = () => {
-  return http.get("/City");
+  return api.get("/City");
 };
 
 const fetchCityById = (id) => {
-  return http.get(`/City/${id}`);
+  return api.get(`/City/${id}`);
 };
 
 const deleteCity = (id) => {
-  return http.delete(`/City/${id}`);
+  return api.delete(`/City/${id}`);
 };
 
 const createCity = (city) => {
-  return http.post('/City/', city);
+  return api.post('/City/', city);
 };
 
 const updateCity = (id, city) => {
-  return http.put(`/City/${id}`, city);
+  return api.put(`/City/${id}`, city);
 };
 
 const CityService = {
