@@ -16,11 +16,18 @@ const deleteLocation = (id) => {
   return http.delete(`/Location/${id}`);
 };
 
-const CountyService = {
+const fetchCityById = (id) => {
+  return http.get(`/City/${id}`);
+};
+
+ 
+
+const LocationService = {
     getLocations,
     createLocation,
     updateLocation,
-    deleteLocation
+    deleteLocation,
+    fetchCityById
 };
 
-export default CountyService;
+export default LocationService;
