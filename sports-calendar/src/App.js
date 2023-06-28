@@ -11,7 +11,9 @@ import UpdateCounty from './Components/County/CountyUpdate';
 import UpdateLocation from './Components/Location/UpdateLocation';
 import Login from './Components/Auth/Login';
 import UserRegister from './Components/Register/UserRegister';
+import PlacementDisplay from './Components/Placement/PlacementMain';
 import { useState } from 'react';
+import RewviewMain from './Components/Review/ReviewMain';
 
 function App() {
 
@@ -34,6 +36,8 @@ function App() {
         { path: 'update-city/:id', element: <CityPut /> },
         { path: 'update-county/:id', element: <UpdateCounty /> },
         { path: 'update-location/:id', element: <UpdateLocation /> },
+        { path: 'Placement', element: < PlacementDisplay / > },
+        { path: 'Review', element: <RewviewMain /> },
       ],
     },
   ]);
