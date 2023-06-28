@@ -1,54 +1,61 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import LocationService from "../../Services/LocationService";
+import React, { useState, useEffect } from 'react';
+import LocationService from '../../Services/LocationService';
+import { useNavigate } from 'react-router-dom'; // import the useNavigate hook
 
-const LocationDisplay = () => {
+function LocationList() {
   const [locations, setLocations] = useState([]);
+  const [isLocationsVisible, setIsLocationsVisible] = useState(false);
+  const [page, setPage] = useState(1); // Set the initial page to 1
+  const navigate = useNavigate(); // initialize the useNavigate hook
 
-  const fetchData = () => {
-    LocationService.getLocations()
-      .then((response) => {
-        const { data } = response;
-        setLocations(data);
+  const fetchLocations = (pageNumber) => {
+    LocationService.getLocations(pageNumber, 5, 'ASC', 'Venue') // Make sure this function takes these parameters
+      .then(response => {
+        setLocations(response.data);
       })
-      .catch((error) => {
-        console.error(error);
+      .catch(e => {
+        console.log(e);
       });
   };
 
-  const handleDeleteLocation = (locationId) => {
-    LocationService.deleteLocation(locationId)
-      .then(() => {
-        // Remove deleted location from the local locations list
-        setLocations(locations => locations.filter(location => location.Id !== locationId));
-      })
-      .catch(error => {
-        console.error(error);
-      });
+
+  const toggleLocationsVisibility = () => {
+    setIsLocationsVisible(!isLocationsVisible);
   };
+
+  useEffect(() => {
+    if (isLocationsVisible) {
+      fetchLocations(page);
+    }
+  }, [isLocationsVisible, page]);
 
   return (
     <div>
-      <button onClick={fetchData}>Fetch Data</button>
-      {locations.length > 0 && (
+      <h2>Locations</h2>
+      <button onClick={toggleLocationsVisibility}>
+        {isLocationsVisible ? 'Hide Locations' : 'Show Locations'}
+      </button>
+      {isLocationsVisible && (
         <div>
-          <h3>Locations:</h3>
-          <ul>
-            {locations.map((location) => {
-              return (
-                <li key={location.Id}>
-                  {location.Venue}, {location.CityName}, {location.CountyName}
-                  <Link to={`/update-location/${location.Id}`}>Update</Link>
-                  <button onClick={() => handleDeleteLocation(location.Id)}>Delete</button>
-                </li>
-              );
-            })}
-          </ul>
+          {locations.map((location) => (
+            <div key={location.id}>
+              <ul>
+                <li><strong>Venue:</strong> {location.venue}</li>
+                <li><strong>City:</strong> {location.cityName}</li>
+                <li><strong>County:</strong> {location.countyName}</li>
+                <li><strong>Active:</strong> {location.IsActive ? 'Yes' : 'No'}</li>
+              </ul>
+              <button onClick={() => navigate(`/update-location/${location.id}`)}>
+                Update
+              </button> {/* Update button for each location */}
+            </div>
+          ))}
+           <button onClick={() => setPage(page + 1)}>Next Page</button>
+          <button onClick={() => setPage(page > 1 ? page - 1 : 1)}>Previous Page</button>
         </div>
       )}
-      {locations.length === 0 && <p>No locations available</p>}
     </div>
   );
-};
+}
 
-export default LocationDisplay;
+export default LocationList;

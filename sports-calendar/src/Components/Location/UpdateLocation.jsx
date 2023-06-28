@@ -2,22 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import LocationService from '../../Services/LocationService';
 
+
 const UpdateLocation = () => {
   const { id } = useParams();
   const [location, setLocation] = useState({
     Id: "",
     Venue: "",
-    CityName: "",
-    CountyName: "",
     UpdatedByUserId: "0d3fa5c2-684c-4d88-82fd-cea2197c6e86",
-    CreatedByUserId: "affb4f68-ae4f-4118-9c4d-0b4aa97324d4",
+    CreatedByUserId: "0d3fa5c2-684c-4d88-82fd-cea2197c6e86",
+    CountyId: "fb0fd01f-3f14-4a3a-9746-883468fb8490",
+    CityId: "a7e5f870-2aa9-4c29-bbe7-1bcbfc2292e8",
     DateCreated: new Date(Date.UTC()),
     DateUpdated: new Date(Date.UTC()),
     IsActive: true
   });
 
   useEffect(() => {
-    LocationService.fetchLocationById(id)
+    LocationService.fetchCityById(id)
       .then(response => {
         const locationData = response.data;
         setLocation(locationData);
@@ -27,10 +28,10 @@ const UpdateLocation = () => {
       });
   }, [id]);
 
-  const handleInputChange = (event, field) => {
+  const handleVenueNameChange = event => {
     setLocation(prevLocation => ({
       ...prevLocation,
-      [field]: event.target.value
+      Venue: event.target.value
     }));
   };
 
@@ -40,27 +41,23 @@ const UpdateLocation = () => {
     LocationService.updateLocation(id, location)
       .then(response => {
         console.log(response.data);
+        // Handle successful update
       })
       .catch(error => {
         console.error(error);
+        // Handle error
       });
   };
+  console.log(location.data);
 
   return (
     <div>
       <h3>Update Location</h3>
       <form onSubmit={handleSubmit}>
         <label>
-          Venue:
-          <input type="text" value={location.Venue} onChange={(e) => handleInputChange(e, "Venue")} />
-        </label>
-        <label>
-          City Name:
-          <input type="text" value={location.CityName} onChange={(e) => handleInputChange(e, "CityName")} />
-        </label>
-        <label>
-          County Name:
-          <input type="text" value={location.CountyName} onChange={(e) => handleInputChange(e, "CountyName")} />
+          Venue Name:
+          <input type="text" value={location.Venue} onChange={handleVenueNameChange} />
+      
         </label>
         <button type="submit">Update</button>
       </form>
