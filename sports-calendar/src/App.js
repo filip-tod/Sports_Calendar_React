@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import CityPut from './Components/City/CityPut';
 import UpdateCounty from './Components/County/CountyUpdate';
 import UpdateLocation from './Components/Location/UpdateLocation';
-import PlacementPagedList from './Components/Placement/PlacementPages';
+import PlacementDisplay from './Components/Placement/PlacementMain';
 
 
 
@@ -24,7 +24,7 @@ const router = createBrowserRouter([{
         { path: 'update-city/:id', element: < CityPut / > },
         { path: 'update-county/:id', element: < UpdateCounty / > },
         { path: 'update-location/:id', element: < UpdateLocation / > },
-        { path: 'Placement', element: < PlacementPagedList / > }
+        { path: 'Placement', element: < PlacementDisplay / > }
     ],
 }, ]);
 
