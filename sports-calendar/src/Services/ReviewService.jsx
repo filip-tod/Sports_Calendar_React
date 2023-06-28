@@ -1,8 +1,16 @@
 import http from "../http-common";
 
-const getReviews = () => {
-  return http.get("/Review");
+const getReviews = (pageNumber = 1, pageSize = 10, sortOrder = 'DESC', orderBy = 'Rating') => {
+  return http.get("/Review", {
+    params: {
+      pageNumber,
+      pageSize,
+      sortOrder,
+      orderBy
+    }
+  });
 };
+
 
 const getReview = (id) => {
   return http.get(`/Review/${id}`);

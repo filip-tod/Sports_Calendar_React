@@ -1,5 +1,5 @@
 import LocationDisplay from "./LocationDisplay";
-import CreateLocation from "./LocationPost";
+import LocationPost from "./LocationPost";
 
 
 
@@ -8,7 +8,7 @@ function LocationMain() {
       <div>
         <h1>Location CRUD for ADMIN</h1>
          <LocationDisplay />
-         <CreateLocation />
+         <LocationPost />
       </div>
 );
 }

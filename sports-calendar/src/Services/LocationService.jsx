@@ -1,7 +1,14 @@
 import http from "../http-common";
 
-const getLocations = () => {
-  return http.get("/Location");
+const getLocations = (pageNumber = 1, pageSize = 10, sortOrder = 'ASC', orderBy = 'Venue') => {
+  return http.get("/Location", {
+    params: {
+      pageNumber,
+      pageSize,
+      sortOrder,
+      orderBy
+    }
+  });
 };
 
 const createLocation = (location) => {

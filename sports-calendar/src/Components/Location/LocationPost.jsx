@@ -4,7 +4,7 @@ import CityService from '../../Services/CityService';
 import CountyService from '../../Services/CountyService';
 import { v4 as uuidv4 } from 'uuid'; // import UUID generator
 
-function CreateLocation() {
+function LocationPost() {
 
 
   const [location, setLocation] = useState({
@@ -89,4 +89,4 @@ function CreateLocation() {
 
 }
 
-export default CreateLocation;
+export default LocationPost;

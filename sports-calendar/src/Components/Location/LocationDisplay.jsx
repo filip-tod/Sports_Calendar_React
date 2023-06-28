@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom'; // import the useNavigate hook
 function LocationList() {
   const [locations, setLocations] = useState([]);
   const [isLocationsVisible, setIsLocationsVisible] = useState(false);
-
+  const [page, setPage] = useState(1); // Set the initial page to 1
   const navigate = useNavigate(); // initialize the useNavigate hook
 
-  const fetchLocations = () => {
-    LocationService.getLocations()
+  const fetchLocations = (pageNumber) => {
+    LocationService.getLocations(pageNumber, 5, 'ASC', 'Venue') // Make sure this function takes these parameters
       .then(response => {
         setLocations(response.data);
       })
@@ -18,15 +18,16 @@ function LocationList() {
       });
   };
 
+
   const toggleLocationsVisibility = () => {
     setIsLocationsVisible(!isLocationsVisible);
   };
 
   useEffect(() => {
     if (isLocationsVisible) {
-      fetchLocations();
+      fetchLocations(page);
     }
-  }, [isLocationsVisible]);
+  }, [isLocationsVisible, page]);
 
   return (
     <div>
@@ -49,6 +50,8 @@ function LocationList() {
               </button> {/* Update button for each location */}
             </div>
           ))}
+           <button onClick={() => setPage(page + 1)}>Next Page</button>
+          <button onClick={() => setPage(page > 1 ? page - 1 : 1)}>Previous Page</button>
         </div>
       )}
     </div>
