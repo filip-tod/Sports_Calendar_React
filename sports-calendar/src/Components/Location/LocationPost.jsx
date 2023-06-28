@@ -66,22 +66,23 @@ function LocationPost() {
           <input type="text" name="Venue" value={location.Venue} onChange={handleInputChange} />
         </label>
         <label>
-          <h1>City</h1>
-          <select name="CityId" value={location.CityId} onChange={handleInputChange}>
-  {cities.map(city => (
-    <option key={city.id} value={city.id}>{city.name}</option>
-  ))}
-</select>
-
-        </label>
-        <label>
-          <h1>County</h1>
-          <select name="CountyId" value={location.CountyId} onChange={handleInputChange}>
-            {counties.map(county => (
-              <option key={county.id} value={county.id}>{county.name}</option>
-            ))}
-          </select>
-        </label>
+  <h1>City</h1>
+  <select name="CityId" value={location.CityId} onChange={handleInputChange}>
+    <option value="" disabled selected>Select a city</option>
+    {cities.map(city => (
+      <option key={city.id} value={city.id}>{city.name}</option>
+    ))}
+  </select>
+</label>
+<label>
+  <h1>County</h1>
+  <select name="CountyId" value={location.CountyId} onChange={handleInputChange}>
+    <option value="" disabled>Select a county</option>
+    {counties.map(county => (
+      <option key={county.id} value={county.id}>{county.name}</option>
+    ))}
+  </select>
+</label>
         <button type="button" onClick={createNewLocation}>Create</button>
       </form>
     </div>

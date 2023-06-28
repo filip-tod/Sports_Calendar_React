@@ -20,7 +20,7 @@ async function LoginUser(credentials) {
     });
     console.log(data);
 
-    return axios.post("https://localhost:44380/login", data)
+    return axios.post("https://localhost:44380/api/login", data)
     .then(data => data.data);
 }
 

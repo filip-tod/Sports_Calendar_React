@@ -12,6 +12,7 @@ import UpdateLocation from './Components/Location/UpdateLocation';
 import Login from './Components/Auth/Login';
 import UserRegister from './Components/Register/UserRegister';
 import { useState } from 'react';
+import RewviewMain from './Components/Review/ReviewMain';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
         { path: '/', element: <Home /> },
         { path: '/login', element: <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>},
         { path: '/register', element: <UserRegister />},
+        { path: '/Review', element: <RewviewMain />},
         { path: 'City', element: <CityDisplay /> },
         { path: 'County', element: <CountyDisplay /> },
         { path: 'Location', element: <LocationDisplay /> },
