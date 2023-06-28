@@ -1,6 +1,7 @@
 import qs from'qs';
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 import useToken from './UseToken';
 
@@ -18,13 +19,14 @@ async function LoginUser(credentials) {
         Password: credentials.password,
         grant_type: 'password',
     });
-    console.log(data);
 
-    return axios.post("https://localhost:44380/login", data)
+    return axios.post("https://localhost:44380/api/login", data)
     .then(data => data.data);
 }
 
-const Login = () => {
+const Login = (props) => {
+
+    const nav = useNavigate();
 
     const { token, setToken } = useToken();
 
@@ -44,13 +46,14 @@ const Login = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const token = await LoginUser({
+        const data = await LoginUser({
             userName,
             password,
         });
-        setToken(token);
+        setToken(data);
+        props.setLoggedIn(true)
+        nav('/')
     }
-    console.log(token)
 
     return (
         <div className='login-container'>
