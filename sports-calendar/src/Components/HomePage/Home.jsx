@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import EventService from "../../Services/EventService";
 import CalendarReact from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import "./calendarStyle.css";
+
 import { differenceInCalendarDays, isSameDay } from "date-fns";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";

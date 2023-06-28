@@ -10,6 +10,7 @@ import {
   Button,
 } from "reactstrap";
 import ReviewService from "../../Services/ReviewService";
+import './eventStyle.css';
 
 function Event() {
   const { eventId } = useParams();
@@ -61,8 +62,9 @@ function Event() {
         setStartDateTime(startDate.toLocaleTimeString());
         setEndDateTime(endDate.toLocaleTimeString());
         setPlacements(sortedPlacements);
+        console.log(eventData.id);
+        const reviewsResponse = await ReviewService.getReviews(1, 20, 'DESC', 'Rating', eventData.id);
 
-        const reviewsResponse = await ReviewService.getReviews(eventData.id);
         setReviews(reviewsResponse.data.data);
         console.log(reviewsResponse.data.data);
         //console.log(reviews.data);

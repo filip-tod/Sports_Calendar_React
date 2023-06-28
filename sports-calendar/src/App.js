@@ -17,7 +17,8 @@ import RewviewMain from './Components/Review/ReviewMain';
 import Calendar from "./Components/Event/Calendar";
 import Event from "./Components/Event/Event";
 import EventPost from "./Components/Event/EventPost";
-
+import "react-calendar/dist/Calendar.css";
+import "./Components/HomePage/calendarStyle.css";
 const router = createBrowserRouter([
   {
     path: "",
