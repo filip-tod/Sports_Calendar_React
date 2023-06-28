@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import LocationService from '../../Services/LocationService';
 import CityService from '../../Services/CityService';
 import CountyService from '../../Services/CountyService';
-import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid'; // import UUID generator
 
 function CreateLocation() {
-  const navigate = useNavigate();
+
 
   const [location, setLocation] = useState({
     Id: uuidv4(), // Generate a new UUID for the location
@@ -28,8 +27,8 @@ function CreateLocation() {
 
   const createNewLocation = () => {
     LocationService.createLocation(location)
-      .then(response => {
-        navigate('/Locations');
+    .then(response => {
+      console.log(response.data);
       })
       .catch(e => {
         console.log(e);
@@ -69,16 +68,17 @@ function CreateLocation() {
         <label>
           <h1>City</h1>
           <select name="CityId" value={location.CityId} onChange={handleInputChange}>
-            {cities.map(city => (
-              <option key={city.Id} value={city.Id}>{city.name}</option>
-            ))}
-          </select>
+  {cities.map(city => (
+    <option key={city.id} value={city.id}>{city.name}</option>
+  ))}
+</select>
+
         </label>
         <label>
           <h1>County</h1>
           <select name="CountyId" value={location.CountyId} onChange={handleInputChange}>
             {counties.map(county => (
-              <option key={county.Id} value={county.Id}>{county.name}</option>
+              <option key={county.id} value={county.id}>{county.name}</option>
             ))}
           </select>
         </label>
