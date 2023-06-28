@@ -17,7 +17,8 @@ function PlacementPagedList({currentEventId}) {
   const [updateFormName, setUpdateFormName] = useState('');
   const [updateFormFinishOrder, setUpdateFormFinishOrder] = useState('');
   const [showUpdateForm, setShowUpdateForm] = useState(false);
-  const authToken = 'Bearer X0kQ0ebKAVSQ2aHG7MWzaORkbwJf9KGDHh_zTjgt6sACHBcaspWva6ZBmw_LHdYhMebHu4LA3uZjTYXXCanibQhh1kXb27uRomeHMiAsWGmm0ZmFL97GnlnNnJ2eeARKsR3eh6YTNDS4TKHbm5jLTNlz3GzXnmp8GhVPy9UdUskd8Y5iIBajZ-Jp1X0DKQ3q18Rt6fLIX8LTmE80uR1i-wE5ZO2xnMgw9QaWLBwQNMYqT9DX1NUX9F8ScIvZmoIcXGWpm89Ly6KkR39w4Bn--guzLNzy5VsRqVT0qoZ-kIZj49Tmftpk5q-lD6We1mAsszvmK-Zen8x2a-rk8WsM7MImL_12sKX1SH3Al7ArP0laGyWw_JJj6ZUcNWiLGDvG9PepTG8dYfvO-NCsEcy87w';
+  const getToken = localStorage.getItem('token');
+  const authToken = `'Bearer ${JSON.parse(getToken).access_token}'`;
 
   const fetchPlacements = async (page) => {
     try {
