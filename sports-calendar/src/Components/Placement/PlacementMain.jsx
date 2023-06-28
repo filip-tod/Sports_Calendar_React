@@ -2,7 +2,7 @@ import React from "react";
 import PlacementPagedList from "./PlacementPages";
 
 function PlacementDisplay() {
-  const currentEventId = localStorage.getItem('token'); 
+  const currentEventId = "5b452225-8a90-4345-8868-65e794ff0577"; 
 
   return (
     <div className="pDisplayDiv">
