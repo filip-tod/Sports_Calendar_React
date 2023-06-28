@@ -16,6 +16,7 @@ import {
 } from 'reactstrap';
 
 function Example(props) {
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -26,7 +27,7 @@ function Example(props) {
   const logout = () => {
     
     localStorage.removeItem('token');
-    //setLoggedIn = false;
+    props.setLoggedIn(false);
     navigate('/');
   }
 
@@ -40,7 +41,7 @@ function Example(props) {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink tag={Link} to="/Home">
+              <NavLink tag={Link} to="/">
                 Home
               </NavLink>
             </NavItem>
@@ -77,23 +78,27 @@ function Example(props) {
                 <DropdownItem divider />
               </DropdownMenu>
             </UncontrolledDropdown>
-            <NavItem>
-              <NavLink tag={Link} to="/Event">Calendar</NavLink>
-            </NavItem>
           </Nav>
           <Nav className="navbar-nav ml-auto disable-flex-grow" navbar>
             <NavItem>
-              <NavLink className="nav-link" tag={Link} to="/">
-                Login
-              </NavLink>
+              {props.loggedIn ? (
+                <NavLink className="nav-link" tag={Link} to='/login' onClick={logout}>
+                  Logout
+                </NavLink>
+              ) : (
+                <NavLink className="nav-link" tag={Link} to="/login">
+                  Login
+                </NavLink>
+              )}
             </NavItem>
+
             <NavItem>
-              <NavLink className="nav-link" tag={Link} to="/">
+              <NavLink className="nav-link" tag={Link} to="/register">
                 Sign Up
               </NavLink>
             </NavItem>
           </Nav>
-  
+
         </Collapse>
       </Navbar>
     </div>
