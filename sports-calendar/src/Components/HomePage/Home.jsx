@@ -76,6 +76,9 @@ function Home() {
     setSelectedEventId(eventId);
     navigate(`/Event/:${eventId}`);
   };
+  const handleCreateEventClick = () =>{
+    navigate(`/EventPost`);
+  }
 
   return (
     <div className="calendar-container">
@@ -112,6 +115,7 @@ function Home() {
           </Button>
         </ModalFooter>
       </Modal>
+      <Button onClick={()=>handleCreateEventClick()}>Create event</Button>
     </div>
   );
 }

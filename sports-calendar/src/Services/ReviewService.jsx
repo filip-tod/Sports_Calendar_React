@@ -1,12 +1,14 @@
 import api from "../http-common";
 
-const getReviews = (pageNumber = 1, pageSize = 10, sortOrder = 'DESC', orderBy = 'Rating') => {
+const getReviews = (pageNumber = 1, pageSize = 10, sortOrder = 'DESC', orderBy = 'Rating', eventId=null,userId=null) => {
   return api.get("/Review", {
     params: {
       pageNumber,
       pageSize,
       sortOrder,
-      orderBy
+      orderBy,
+      eventId,
+      userId
     }
   });
 };
