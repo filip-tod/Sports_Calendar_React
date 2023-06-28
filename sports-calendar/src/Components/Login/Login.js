@@ -12,7 +12,6 @@ import FormElement from '../Generic/FormElement';
 import SubmitButton from '../Generic/Button';
 
 async function LoginUser(credentials) {
-
     const data = qs.stringify({
         Username: credentials.userName,
         Password: credentials.password,
@@ -24,10 +23,18 @@ async function LoginUser(credentials) {
     .then(data => data.data);
 }
 
-const Login = () => {
+async function getUserRoles(token) {
+    const headers = {
+        Authorization: `Bearer ${token}`
+    };
+
+    return axios.get("https://localhost:44380/api/user", { headers })
+    .then(data => data.data.roles);
+}
+
+const Login = ({ setLoggedIn }) => { 
 
     const { token, setToken } = useToken();
-
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
 
@@ -38,7 +45,6 @@ const Login = () => {
 
     const handleChangePassword = (event) => {
         event.preventDefault();
-
         setPassword(event.target.value)
     }
 
@@ -49,6 +55,10 @@ const Login = () => {
             password,
         });
         setToken(token);
+        setLoggedIn(true); 
+        localStorage.setItem('token', token); 
+        const roles = await getUserRoles(token);
+        localStorage.setItem('roles', JSON.stringify(roles));
     }
     console.log(token)
 
@@ -56,12 +66,11 @@ const Login = () => {
         <div className='login-container'>
             <Form className='login-form'>
                 <FormElement props={{ label: 'Username: ', type: 'text', name: 'userName', value: userName, handleChange: handleChangeUsername }} />
-                <FormElement props={{ label: 'Password: ', type: 'password', name: 'password',value: password, handleChange: handleChangePassword }} />
+                <FormElement props={{ label: 'Password: ', type: 'password', name: 'password', value: password, handleChange: handleChangePassword }} />
                 <SubmitButton props={{ text: 'LogIn', color: 'primary', type: 'submit', onClick: handleSubmit}} />
             </Form>
         </div>
     )
 }
-
 
 export default Login;

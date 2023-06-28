@@ -11,29 +11,8 @@ import UpdateCounty from './Components/County/CountyUpdate';
 import UpdateLocation from './Components/Location/UpdateLocation';
 import Login from './Components/Auth/Login';
 import UserRegister from './Components/Register/UserRegister';
-import PlacementDisplay from './Components/Placement/PlacementMain';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import RewviewMain from './Components/Review/ReviewMain';
-import Calendar from "./Components/Event/Calendar";
-import Event from "./Components/Event/Event";
-import EventPost from "./Components/Event/EventPost";
-import "react-calendar/dist/Calendar.css";
-import "./Components/HomePage/calendarStyle.css";
-const router = createBrowserRouter([
-  {
-    path: "",
-    element: <RootLayout />,
-    children: [
-      { path: "", element: <Home /> },
-      { path: "County", element: <CountyDisplay /> },
-      { path: "Location", element: <LocationDisplay /> },
-      { path: 'City', element: < CityDisplay /> },
-      { path: "update-city/:id", element: <CityPut /> },
-      { path: "update-county/:id", element: <UpdateCounty /> },
-      { path: "update-location/:id", element: <UpdateLocation /> },
-    ],
-  },
-]);
 
 function App() {
 
@@ -41,34 +20,33 @@ function App() {
     localStorage.token ? true : false
   );
 
+  const [roles, setRoles] = useState(
+    localStorage.roles ? JSON.parse(localStorage.roles) : []
+  );
+
+  useEffect(() => {
+    setRoles(localStorage.roles ? JSON.parse(localStorage.roles) : []);
+  }, [loggedIn]);
+
+
   const router = createBrowserRouter([
     {
       path: '',
-      element: <RootLayout loggedIn={loggedIn} setLoggedIn={setLoggedIn} />,
+      element: <RootLayout loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>,
       children: [
         { path: '', element: <Home /> },
-        { path: '/', element: <Home /> },
-        { path: '/login', element: <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} /> },
-        { path: '/register', element: <UserRegister /> },
+        { path: '/login', element: <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>},
+        { path: '/register', element: <UserRegister />},
+        { path: '/Review', element: <RewviewMain />},
         { path: 'City', element: <CityDisplay /> },
         { path: 'County', element: <CountyDisplay /> },
         { path: 'Location', element: <LocationDisplay /> },
         { path: 'update-city/:id', element: <CityPut /> },
         { path: 'update-county/:id', element: <UpdateCounty /> },
         { path: 'update-location/:id', element: <UpdateLocation /> },
-        { path: 'Placement', element: < PlacementDisplay /> },
-        { path: 'Review', element: <RewviewMain /> },
-        { path: "/Home", element: <Home /> },
-        { path: "/Event/:eventId", element: <Event /> },
-        { path: "/EventPost", element: <EventPost /> },
       ],
     },
   ]);
-
-  window.onbeforeunload = function () {
-    localStorage.removeItem('token');
-    return '';
-  };
 
   return <RouterProvider router={router} />;
 }
