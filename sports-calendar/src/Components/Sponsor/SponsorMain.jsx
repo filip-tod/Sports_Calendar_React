@@ -3,7 +3,7 @@ import SponsorList from './SponsorPages';
 import SponsorPost from './SponsorPost';
 import SponsorService from '../../Services/SponsorService';
 
-function SponsorDisplay() {
+function SponsorDisplay({isMainEditClicked}) {
   const [sponsors, setSponsors] = useState([]);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function SponsorDisplay() {
 
   return (
     <div className="sDisplayDiv">
-      <SponsorList sponsors={sponsors} fetchSponsors={fetchSponsors} />
+      <SponsorList sponsors={sponsors} fetchSponsors={fetchSponsors} isMainEditClicked={isMainEditClicked} />
       <SponsorPost onAddSponsor={addSponsor} />
     </div>
   );

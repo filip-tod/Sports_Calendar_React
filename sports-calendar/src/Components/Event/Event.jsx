@@ -18,6 +18,7 @@ import SportService from "../../Services/SportService";
 import PlacementDisplay from "../Placement/PlacementMain";
 import Review from "../Review/Review";
 import RewviewMain from "../Review/ReviewMain";
+import SponsorDisplay from "../Sponsor/SponsorMain";
 
 function Event() {
   const { eventId } = useParams();
@@ -493,6 +494,7 @@ function Event() {
         )}
       </ListGroup> */}
       <PlacementDisplay currentEventId={eventId} isMainEditClicked={isMainEditClicked.valueOf()}/>
+      <SponsorDisplay isMainEditClicked={isMainEditClicked.valueOf()} />
       
     </Container>
   );
