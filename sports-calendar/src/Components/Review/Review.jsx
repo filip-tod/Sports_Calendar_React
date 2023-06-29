@@ -1,8 +1,19 @@
 import React, { useEffect, useState } from "react";
 import ReviewService from "../../Services/ReviewService";
-import { ListGroup, ListGroupItem, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from "reactstrap";
+import {
+  ListGroup,
+  ListGroupItem,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input,
+} from "reactstrap";
+import { useParams } from "react-router";
 
 function Review() {
+  const eventId = useParams();
   const [reviews, setReviews] = useState(null);
   const [orderBy, setOrderBy] = useState("Rating");
   const [sortOrder, setSortOrder] = useState("DESC");
@@ -15,53 +26,58 @@ function Review() {
     retrieveReviews();
   }, [pageNumber]);
 
-  const retrieveReviews = () => {
-    ReviewService.getReviews(pageNumber, pageSize, sortOrder, orderBy)
-      .then(response => {
-        console.log(response.data.data);
-        setReviews(response.data.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+  const retrieveReviews = async () => {
+    console.log(eventId);
+    const reviewsResponse = await ReviewService.getReviews(
+      // orderBy,
+      // sortOrder,
+      // pageSize,
+      // pageNumber,
+      eventId
+    );
+    console.log(reviewsResponse);
+    setReviews(reviewsResponse.data.data);
   };
 
   const nextPage = () => {
-    setPageNumber(prevPageNumber => prevPageNumber + 1);
+    setPageNumber((prevPageNumber) => prevPageNumber + 1);
   };
-  
+
   const previousPage = () => {
     if (pageNumber > 1) {
-      setPageNumber(prevPageNumber => prevPageNumber - 1);
+      setPageNumber((prevPageNumber) => prevPageNumber - 1);
     }
   };
 
-  const openUpdateModal = review => {
+  const openUpdateModal = (review) => {
     setCurrentReview(review);
     setIsModalOpen(true);
   };
 
-  const handleInputChange = event => {
-    setCurrentReview({ ...currentReview, [event.target.name]: event.target.value });
+  const handleInputChange = (event) => {
+    setCurrentReview({
+      ...currentReview,
+      [event.target.name]: event.target.value,
+    });
   };
 
   const updateReview = () => {
     ReviewService.updateReview(currentReview.id, currentReview)
-      .then(response => {
+      .then((response) => {
         retrieveReviews(); // Refresh reviews after update
         setIsModalOpen(false);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
 
   const deleteReview = (id) => {
     ReviewService.removeReview(id)
-      .then(response => {
+      .then((response) => {
         retrieveReviews(); // Refresh reviews after deletion
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
@@ -75,7 +91,9 @@ function Review() {
               {`User: ${review.userName}  Rating: ${review.rating}`}
               <p> {review.content}</p>
               <Button onClick={() => openUpdateModal(review)}>Update</Button>
-              <Button color="danger" onClick={() => deleteReview(review.id)}>Delete</Button>
+              <Button color="danger" onClick={() => deleteReview(review.id)}>
+                Delete
+              </Button>
             </ListGroupItem>
           ))
         ) : (
@@ -86,14 +104,34 @@ function Review() {
       <button onClick={nextPage}>Next Page</button>
 
       <Modal isOpen={isModalOpen} toggle={() => setIsModalOpen(!isModalOpen)}>
-        <ModalHeader toggle={() => setIsModalOpen(!isModalOpen)}>Update Review</ModalHeader>
+        <ModalHeader toggle={() => setIsModalOpen(!isModalOpen)}>
+          Update Review
+        </ModalHeader>
         <ModalBody>
-          <Input type="textarea" name="content" value={currentReview.content} onChange={handleInputChange} placeholder="Content" />
-          <Input type="number" name="rating" value={currentReview.rating} onChange={handleInputChange} placeholder="Rating" min={1} max={5} />
+          <Input
+            type="textarea"
+            name="content"
+            value={currentReview.content}
+            onChange={handleInputChange}
+            placeholder="Content"
+          />
+          <Input
+            type="number"
+            name="rating"
+            value={currentReview.rating}
+            onChange={handleInputChange}
+            placeholder="Rating"
+            min={1}
+            max={5}
+          />
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={updateReview}>Update Review</Button>{' '}
-          <Button color="secondary" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+          <Button color="primary" onClick={updateReview}>
+            Update Review
+          </Button>{" "}
+          <Button color="secondary" onClick={() => setIsModalOpen(false)}>
+            Cancel
+          </Button>
         </ModalFooter>
       </Modal>
     </div>

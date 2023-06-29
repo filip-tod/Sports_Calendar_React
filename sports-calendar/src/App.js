@@ -19,21 +19,7 @@ import Event from "./Components/Event/Event";
 import EventPost from "./Components/Event/EventPost";
 import "react-calendar/dist/Calendar.css";
 import "./Components/HomePage/calendarStyle.css";
-const router = createBrowserRouter([
-  {
-    path: "",
-    element: <RootLayout />,
-    children: [
-      { path: "", element: <Home /> },
-      { path: "County", element: <CountyDisplay /> },
-      { path: "Location", element: <LocationDisplay /> },
-      { path: 'City', element: < CityDisplay /> },
-      { path: "update-city/:id", element: <CityPut /> },
-      { path: "update-county/:id", element: <UpdateCounty /> },
-      { path: "update-location/:id", element: <UpdateLocation /> },
-    ],
-  },
-]);
+import Review from './Components/Review/Review';
 
 function App() {
 
@@ -58,6 +44,7 @@ function App() {
         { path: 'update-location/:id', element: <UpdateLocation /> },
         { path: 'Placement', element: < PlacementDisplay /> },
         { path: 'Review', element: <RewviewMain /> },
+        // { path: "/Review/:eventId", element: <Review /> },
         { path: "/Home", element: <Home /> },
         { path: "/Event/:eventId", element: <Event /> },
         { path: "/EventPost", element: <EventPost /> },
@@ -65,10 +52,6 @@ function App() {
     },
   ]);
 
-  window.onbeforeunload = function () {
-    localStorage.removeItem('token');
-    return '';
-  };
 
   return <RouterProvider router={router} />;
 }
