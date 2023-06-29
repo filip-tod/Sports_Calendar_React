@@ -1,34 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import axios from 'axios';
-import '../../Style/placementPages.css';
+import { Pagination, PaginationItem, PaginationLink, ListGroup, ListGroupItem, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
 import PlacementService from '../../Services/PlacementService';
 
-function PlacementPagedList({currentEventId}) {
+function PlacementPagedList({ currentEventId, isMainEditClicked }) {
   const [placements, setPlacements] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [orderBy, setOrderBy] = useState('FinishOrder');
   const [sortOrder, setSortOrder] = useState('DESC');
   const [pageSize, setPageSize] = useState(10);
-  const [eventId, setEventId] = useState('');
   const [filtersChanged, setFiltersChanged] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [selectedPlacement, setSelectedPlacement] = useState(null);
   const [updateFormName, setUpdateFormName] = useState('');
   const [updateFormFinishOrder, setUpdateFormFinishOrder] = useState('');
   const [showUpdateForm, setShowUpdateForm] = useState(false);
-  const getToken = localStorage.getItem('token');
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPlacement, setCurrentPlacement] = useState({ name: '', finishOrder: '' });
 
   const fetchPlacements = async (page) => {
     try {
       const response = await PlacementService.getPlacements({
-          orderBy,
-          sortOrder,
-          pageSize,
-          pageNumber: page,
-          eventId: currentEventId,
+        orderBy,
+        sortOrder,
+        pageSize,
+        pageNumber: page,
+        eventId: currentEventId,
       });
 
       const responseData = response.data;
@@ -45,11 +42,11 @@ function PlacementPagedList({currentEventId}) {
     const fetchInitialPlacements = async () => {
       try {
         const response = await PlacementService.getPlacements({
-            orderBy,
-            sortOrder,
-            pageSize,
-            pageNumber: 1,
-            eventId: currentEventId,
+          orderBy,
+          sortOrder,
+          pageSize,
+          pageNumber: 1,
+          eventId: currentEventId,
         });
 
         const responseData = response.data;
@@ -112,170 +109,151 @@ function PlacementPagedList({currentEventId}) {
   const handleUpdatePlacement = async () => {
     if (selectedPlacement) {
       const placementId = selectedPlacement;
+      const updatedPlacement = {
+        name: updateFormName,
+        finishOrder: updateFormFinishOrder,
+      };
       try {
+        await PlacementService.updatePlacement(placementId, updatedPlacement);
+        console.log(`Placement with ID ${placementId} updated successfully.`);
+        setShowUpdateForm(false);
         setUpdateFormName('');
         setUpdateFormFinishOrder('');
-        setShowUpdateForm(true);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
-  const handlePlacementSelection = (placementId) => {
-    setSelectedPlacement(placementId);
-  };
-
-  const handleUpdateFormSubmit = async (e) => {
-    e.preventDefault();
-    if (selectedPlacement) {
-      const placementId = selectedPlacement;
-      try {
-        await PlacementService.updatePlacement(placementId, {
-          name: updateFormName,
-          finishOrder: updateFormFinishOrder,
-        });
-
-        console.log(`Placement with ID ${placementId} updated successfully.`);
-
         fetchPlacements(currentPage);
         setSelectedPlacement(null);
-        setShowUpdateForm(false);
       } catch (error) {
         console.log(error);
       }
     }
+  };
+
+  const openUpdateModal = (placement) => {
+    setSelectedPlacement(placement.id);
+    setCurrentPlacement(placement);
+    setUpdateFormName(placement.name);
+    setUpdateFormFinishOrder(placement.finishOrder);
+    setShowUpdateForm(true);
+  };
+
+  const deletePlacement = (placementId) => {
+    setSelectedPlacement(placementId);
+    setIsModalOpen(true);
   };
 
   const renderPlacements = () => {
-    return placements.map((placement) => (
-      <div key={placement.id}>
-        <label htmlFor="selectedPlacement">Edit</label><input
-          type="checkbox"
-          name="selectedPlacement"
-          value={placement.id}
-          checked={selectedPlacement === placement.id}
-          onChange={() => handlePlacementSelection(placement.id)}
-        />
-        {/* <p>ID: {placement.id}</p> */}
-        <p>Name: {placement.name}</p>
-        <p>Finish Order: {placement.finishOrder}</p>
-        { <p>Event ID: {placement.eventId}</p> }
-        <hr />
-      </div>
-    ));
-  };
-
-  const renderPagination = () => {
-    if (totalPages <= 1) {
-      return null;
-    }
-
-    let startPage = Math.max(currentPage - 5, 1);
-    let endPage = Math.min(currentPage + 4, totalPages);
-
-    if (currentPage <= 5) {
-      endPage = Math.min(10, totalPages);
-    }
-
-    if (currentPage + 4 >= totalPages) {
-      startPage = Math.max(totalPages - 9, 1);
-    }
-
-    const pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
-
     return (
-      <Pagination aria-label="Placement pagination">
-        <PaginationItem disabled={currentPage === 1}>
-          <PaginationLink previous onClick={() => handlePageChange(currentPage - 1)} />
-        </PaginationItem>
-
-        {pageNumbers.map((page) => (
-          <PaginationItem active={currentPage === page} key={page}>
-            <PaginationLink onClick={() => handlePageChange(page)}>{page}</PaginationLink>
-          </PaginationItem>
-        ))}
-
-        <PaginationItem disabled={currentPage === totalPages}>
-          <PaginationLink next onClick={() => handlePageChange(currentPage + 1)} />
-        </PaginationItem>
-      </Pagination>
+      <ListGroup className="text-center">
+        {placements.length > 0 ? (
+          placements.map((placement) => (
+            <ListGroupItem key={placement.id} className="square border border-2">
+              <p>Name: {placement.name}</p>
+              <p>Finish Order: {placement.finishOrder}</p>
+              {/* {placement.eventId && <p>Event ID: {placement.eventId}</p>} */}
+              <hr />
+              {isMainEditClicked && (
+                <>
+                  <Button onClick={() => openUpdateModal(placement)} className="me-4">
+                    Update
+                  </Button>
+                  <Button color="danger" onClick={() => deletePlacement(placement.id)}>
+                    Delete
+                  </Button>
+                </>
+              )}
+            </ListGroupItem>
+          ))
+        ) : (
+          <ListGroupItem>No placements available</ListGroupItem>
+        )}
+      </ListGroup>
     );
   };
 
+  const renderPaginationItems = () => {
+    const numButtonsToShow = 10;
+    const halfNumButtons = Math.floor(numButtonsToShow / 2);
+
+    let startPage = Math.max(currentPage - halfNumButtons, 1);
+    let endPage = Math.min(startPage + numButtonsToShow - 1, totalPages);
+
+    if (endPage - startPage < numButtonsToShow - 1) {
+      startPage = Math.max(endPage - numButtonsToShow + 1, 1);
+    }
+
+    const paginationItems = [];
+    for (let page = startPage; page <= endPage; page++) {
+      paginationItems.push(
+        <PaginationItem key={page} active={page === currentPage}>
+          <PaginationLink onClick={() => handlePageChange(page)}>{page}</PaginationLink>
+        </PaginationItem>
+      );
+    }
+
+    return paginationItems;
+  };
+
   return (
-    <div className="placement-paged-list">
-      <h1>Placement List</h1>
-      <div className="filter-container">
-        <label>Order By:</label>
-        <select value={orderBy} onChange={(e) => setOrderBy(e.target.value)}>
-          <option value="FinishOrder">Finish Order</option>
-          <option value="Name">Name</option>
-          <option value="EventId">Event ID</option>
-        </select>
-        <label>Sort Order:</label>
-        <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
-          <option value="DESC">Descending</option>
-          <option value="ASC">Ascending</option>
-        </select>
-        <button onClick={handleFilterConfirm}>Apply Filters</button>
-      </div>
-      <div className="action-buttons">
-        <button onClick={handleDeletePlacement} disabled={!selectedPlacement}>
-          Delete Placement
-        </button>
-        <button onClick={handleUpdatePlacement} disabled={!selectedPlacement}>
-          Update Placement
-        </button>
-      </div>
-      {showUpdateForm && (
-        <div className="update-form">
-          <h2>Update Placement</h2>
-          <form onSubmit={handleUpdateFormSubmit}>
-            <div>
-              <label>Name:</label>
-              <input
-                type="text"
-                value={updateFormName}
-                onChange={(e) => setUpdateFormName(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Finish Order:</label>
-              <input
-                type="text"
-                value={updateFormFinishOrder}
-                onChange={(e) => setUpdateFormFinishOrder(e.target.value)}
-              />
-            </div>
-            <button type="submit">Update</button>
-          </form>
-        </div>
-      )}
-      <div className="placement-container">{renderPlacements()}</div>
-      {renderPagination()}
+    <div>
+      {renderPlacements()}
+
+      <Pagination className="mt-4 justify-content-center">
+        {currentPage > 1 && (
+          <PaginationItem>
+            <PaginationLink onClick={() => handlePageChange(currentPage - 1)} previous />
+          </PaginationItem>
+        )}
+
+        {renderPaginationItems()}
+
+        {currentPage < totalPages && (
+          <PaginationItem>
+            <PaginationLink onClick={() => handlePageChange(currentPage + 1)} next />
+          </PaginationItem>
+        )}
+      </Pagination>
+
+      <Modal isOpen={isModalOpen} toggle={() => setIsModalOpen(!isModalOpen)}>
+        <ModalHeader>Delete Placement</ModalHeader>
+        <ModalBody>
+          Are you sure you want to delete this placement?
+        </ModalBody>
+        <ModalFooter>
+          <Button color="danger" onClick={handleDeletePlacement}>
+            Delete
+          </Button>{' '}
+          <Button color="secondary" onClick={() => setIsModalOpen(!isModalOpen)}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={showUpdateForm} toggle={() => setShowUpdateForm(!showUpdateForm)}>
+        <ModalHeader>Update Placement</ModalHeader>
+        <ModalBody>
+          <Input
+            type="text"
+            placeholder="Name"
+            value={updateFormName}
+            onChange={(e) => setUpdateFormName(e.target.value)}
+          />
+          <Input
+            type="text"
+            placeholder="Finish Order"
+            value={updateFormFinishOrder}
+            onChange={(e) => setUpdateFormFinishOrder(e.target.value)}
+          />
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={handleUpdatePlacement}>
+            Update
+          </Button>{' '}
+          <Button color="secondary" onClick={() => setShowUpdateForm(!showUpdateForm)}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 }
 
-async function fetchPlacements(page, currentEventId, orderBy, sortOrder, pageSize) {
-  try {
-    const response = await PlacementService.getPlacements({
-      orderBy,
-      sortOrder,
-      pageSize,
-      pageNumber: page,
-      eventId: currentEventId,
-    });
-
-    const responseData = response.data;
-    const placementsData = Array.isArray(responseData) ? responseData : responseData.data;
-
-    return placementsData;
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
-}
-
-export  {PlacementPagedList, fetchPlacements };
+export { PlacementPagedList };

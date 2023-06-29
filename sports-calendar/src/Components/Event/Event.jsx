@@ -492,7 +492,7 @@ function Event() {
           <ListGroupItem>No reviews available</ListGroupItem>
         )}
       </ListGroup> */}
-      <PlacementDisplay currentEventId={eventId}/>
+      <PlacementDisplay currentEventId={eventId} isMainEditClicked={isMainEditClicked.valueOf()}/>
       
     </Container>
   );
