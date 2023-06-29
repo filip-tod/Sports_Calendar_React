@@ -18,6 +18,8 @@ function PlacementPagedList({currentEventId}) {
   const [updateFormName, setUpdateFormName] = useState('');
   const [updateFormFinishOrder, setUpdateFormFinishOrder] = useState('');
   const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const getToken = localStorage.getItem('token');
+  
 
   const fetchPlacements = async (page) => {
     try {
