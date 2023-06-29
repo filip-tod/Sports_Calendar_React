@@ -20,6 +20,8 @@ import EventPost from "./Components/Event/EventPost";
 import SponsorDisplay from './Components/Sponsor/SponsorMain';
 import "react-calendar/dist/Calendar.css";
 import "./Components/HomePage/calendarStyle.css";
+import Review from './Components/Review/Review';
+
 function App() {
   const [loggedIn, setLoggedIn] = useState(
     localStorage.token ? true : false
@@ -41,6 +43,7 @@ function App() {
         { path: 'update-location/:id', element: <UpdateLocation /> },
         { path: 'Placement', element: < PlacementDisplay /> },
         { path: 'Review', element: <RewviewMain /> },
+        // { path: "/Review/:eventId", element: <Review /> },
         { path: "/Home", element: <Home /> },
         { path: "/Event/:eventId", element: <Event /> },
         { path: "/EventPost", element: <EventPost /> },
@@ -48,10 +51,8 @@ function App() {
       ],
     },
   ]);
-  window.onbeforeunload = function () {
-    localStorage.removeItem('token');
-    return '';
-  };
+
+
   return <RouterProvider router={router} />;
 }
 export default App;

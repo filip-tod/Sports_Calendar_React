@@ -15,6 +15,9 @@ import "./eventStyle.css";
 import { end } from "@popperjs/core";
 import LocationService from "../../Services/LocationService";
 import SportService from "../../Services/SportService";
+import PlacementDisplay from "../Placement/PlacementMain";
+import Review from "../Review/Review";
+import RewviewMain from "../Review/ReviewMain";
 
 function Event() {
   const { eventId } = useParams();
@@ -97,12 +100,12 @@ function Event() {
         setEndDateTime(endDate.toLocaleTimeString());
         setPlacements(sortedPlacements);
         console.log(eventData.id);
-        const reviewsResponse = await ReviewService.getReviews(
-          1,
-          20,
-          "DESC",
-          "Rating",
-          eventData.id
+        const reviewsResponse = await ReviewService.getReviews({
+          // 1,
+          // 20,
+          // "DESC",
+          // "Rating",
+          eventId:eventData.id}
         );
 
         setReviews(reviewsResponse.data.data);
@@ -195,7 +198,9 @@ function Event() {
       console.log("Error deleting event:", error);
     }
   };
-  
+  const handleEditReview = (eventId) => {
+    navigate(`/Review/${eventId}`);
+  };
 
   return (
     <Container className="mt-5">
@@ -470,18 +475,25 @@ function Event() {
         ))}
       </ListGroup>
       <h4 className="mt-4">Reviews:</h4>
-      <ListGroup className="text-center">
+      <Review eventId={eventId}/>
+      {/* <RewviewMain eventId={eventId}/> */}
+      {/* <ListGroup className="text-center">
         {reviews && reviews.length > 0 ? (
           reviews.map((review) => (
             <ListGroupItem key={review.id} className="square border border-2">
               {`User: ${review.userName} Rating: ${review.rating}`}
               <p> {review.content}</p>
+              {/* {isMainEditClicked &&(
+                <button onClick={()=>handleEditReview(review.eventId)}>Edit</button>
+              )} }
             </ListGroupItem>
           ))
         ) : (
           <ListGroupItem>No reviews available</ListGroupItem>
         )}
-      </ListGroup>
+      </ListGroup> */}
+      <PlacementDisplay currentEventId={eventId}/>
+      
     </Container>
   );
 }
