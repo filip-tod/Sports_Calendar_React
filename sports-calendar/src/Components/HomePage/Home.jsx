@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import EventService from "../../Services/EventService";
 import CalendarReact from "react-calendar";
-
 import { differenceInCalendarDays, isSameDay } from "date-fns";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
@@ -103,9 +102,13 @@ function Home() {
                   </Link>
                 </li>
               ))}
+              <Button onClick={()=>handleCreateEventClick()}>Create event</Button>
             </ul>
           ) : (
+            <>
             <p>No events found for this date.</p>
+            <Button onClick={()=>handleCreateEventClick()}>Create event</Button>
+            </>
           )}
         </ModalBody>
         <ModalFooter>
@@ -114,7 +117,7 @@ function Home() {
           </Button>
         </ModalFooter>
       </Modal>
-      <Button onClick={()=>handleCreateEventClick()}>Create event</Button>
+      {/* <Button onClick={()=>handleCreateEventClick()}>Create event</Button> */}
     </div>
   );
 }

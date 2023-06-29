@@ -1,12 +1,13 @@
 import Review from "./Review";
 import ReviewPost from "./ReviewPost";
+import { useParams } from "react-router";
 
-
-function RewviewMain(){
+function RewviewMain({eventId}){
+  //const { eventId } = useParams();
     return (
         <div>
-       <Review />
-       <ReviewPost/>
+       <Review eventId={eventId}/>
+       <ReviewPost />
         </div>
       );
     }

@@ -19,7 +19,6 @@ function PlacementPagedList({currentEventId}) {
   const [updateFormFinishOrder, setUpdateFormFinishOrder] = useState('');
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const getToken = localStorage.getItem('token');
-  const authToken = `'Bearer ${JSON.parse(getToken).access_token}'`;
   
 
   const fetchPlacements = async (page) => {
@@ -259,4 +258,24 @@ function PlacementPagedList({currentEventId}) {
   );
 }
 
-export default PlacementPagedList;
+async function fetchPlacements(page, currentEventId, orderBy, sortOrder, pageSize) {
+  try {
+    const response = await PlacementService.getPlacements({
+      orderBy,
+      sortOrder,
+      pageSize,
+      pageNumber: page,
+      eventId: currentEventId,
+    });
+
+    const responseData = response.data;
+    const placementsData = Array.isArray(responseData) ? responseData : responseData.data;
+
+    return placementsData;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
+export  {PlacementPagedList, fetchPlacements };

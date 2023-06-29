@@ -13,9 +13,16 @@ import Login from './Components/Auth/Login';
 import UserRegister from './Components/Register/UserRegister';
 import { useState, useEffect } from 'react';
 import RewviewMain from './Components/Review/ReviewMain';
+import Calendar from "./Components/Event/Calendar";
+import Event from "./Components/Event/Event";
+import EventPost from "./Components/Event/EventPost";
+import SponsorDisplay from './Components/Sponsor/SponsorMain';
+import "react-calendar/dist/Calendar.css";
+import "./Components/HomePage/calendarStyle.css";
+import Review from './Components/Review/Review';
+import PlacementDisplay from './Components/Placement/PlacementMain';
 
 function App() {
-
   const [loggedIn, setLoggedIn] = useState(
     localStorage.token ? true : false
   );
@@ -44,11 +51,17 @@ function App() {
         { path: 'update-city/:id', element: <CityPut /> },
         { path: 'update-county/:id', element: <UpdateCounty /> },
         { path: 'update-location/:id', element: <UpdateLocation /> },
+        { path: 'Placement', element: < PlacementDisplay /> },
+        { path: 'Review', element: <RewviewMain /> },
+        // { path: "/Review/:eventId", element: <Review /> },
+        { path: "/Home", element: <Home /> },
+        { path: "/Event/:eventId", element: <Event /> },
+        { path: "/EventPost", element: <EventPost /> },
+        { path: "Sponsor", element: <SponsorDisplay />},
       ],
     },
   ]);
 
   return <RouterProvider router={router} />;
 }
-
 export default App;
