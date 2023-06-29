@@ -17,30 +17,13 @@ import RewviewMain from './Components/Review/ReviewMain';
 import Calendar from "./Components/Event/Calendar";
 import Event from "./Components/Event/Event";
 import EventPost from "./Components/Event/EventPost";
+import SponsorDisplay from './Components/Sponsor/SponsorMain';
 import "react-calendar/dist/Calendar.css";
 import "./Components/HomePage/calendarStyle.css";
-const router = createBrowserRouter([
-  {
-    path: "",
-    element: <RootLayout />,
-    children: [
-      { path: "", element: <Home /> },
-      { path: "County", element: <CountyDisplay /> },
-      { path: "Location", element: <LocationDisplay /> },
-      { path: 'City', element: < CityDisplay /> },
-      { path: "update-city/:id", element: <CityPut /> },
-      { path: "update-county/:id", element: <UpdateCounty /> },
-      { path: "update-location/:id", element: <UpdateLocation /> },
-    ],
-  },
-]);
-
 function App() {
-
   const [loggedIn, setLoggedIn] = useState(
     localStorage.token ? true : false
   );
-
   const router = createBrowserRouter([
     {
       path: '',
@@ -61,16 +44,14 @@ function App() {
         { path: "/Home", element: <Home /> },
         { path: "/Event/:eventId", element: <Event /> },
         { path: "/EventPost", element: <EventPost /> },
+        { path: "Sponsor", element: <SponsorDisplay />},
       ],
     },
   ]);
-
   window.onbeforeunload = function () {
     localStorage.removeItem('token');
     return '';
   };
-
   return <RouterProvider router={router} />;
 }
-
 export default App;

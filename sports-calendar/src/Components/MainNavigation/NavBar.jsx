@@ -75,8 +75,13 @@ function Example(props) {
                 <DropdownItem tag={Link} to="/Review">
                   Go To Review
                 </DropdownItem>
+                <DropdownItem divider />
                 <DropdownItem tag={Link} to="/Placement">
                   Placements
+                </DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem tag={Link} to="/Sponsor">
+                  Sponsors
                 </DropdownItem>
                 <DropdownItem divider />
               </DropdownMenu>
