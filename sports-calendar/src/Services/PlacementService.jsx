@@ -1,7 +1,7 @@
 import api from "../http-common";
 
-const getPlacements = () => {
-  return api.get("/Placement");
+const getPlacements = (params) => {
+  return api.get("/Placement", {params});
 };
 
 const getPlacement = (id) => {
