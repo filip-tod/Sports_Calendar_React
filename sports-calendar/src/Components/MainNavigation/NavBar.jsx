@@ -14,6 +14,8 @@ import {
   DropdownMenu,
   DropdownItem,
 } from 'reactstrap';
+import RegisterService from '../../Services/RegisterService';
+import axios from 'axios';
 
 function Example(props) {
 
@@ -23,9 +25,10 @@ function Example(props) {
 
   // navigate and logout handle Logout link onClick event
   const navigate = useNavigate();
-  
+
   const logout = () => {
-    
+    RegisterService.logoutUser()
+      .then(response => console.log(response));
     localStorage.removeItem('token');
     props.setLoggedIn(false);
     navigate('/');
@@ -86,6 +89,10 @@ function Example(props) {
                 <DropdownItem divider />
                 <DropdownItem tag={Link} to="/EventPost">
                 Event Post
+                </DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem tag={Link} to="/Users">
+                  Go To Users
                 </DropdownItem>
                 <DropdownItem divider />
               </DropdownMenu>
