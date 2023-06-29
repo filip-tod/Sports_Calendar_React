@@ -1,28 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { ListGroup, ListGroupItem, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
-import SponsorService from '../../Services/SponsorService';
+import React, { useState, useEffect } from "react";
+import {
+  ListGroup,
+  ListGroupItem,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input,
+} from "reactstrap";
+import SponsorService from "../../Services/SponsorService";
+import { useParams } from "react-router";
+import EventSponsorService from "../../Services/EventSponsorService";
 
-function SponsorList({isMainEditClicked}) {
-  const [sponsors, setSponsors] = useState([]);
+function SponsorList({ isMainEditClicked }) {
+  const eventId = useParams();
+  const [sponsors, setSponsors] = useState(null);
+  const [orderBy, setOrderBy] = useState("Rating");
+  const [sortOrder, setSortOrder] = useState("DESC");
+  const [pageSize, setPageSize] = useState(10);
+  const [pageNumber, setPageNumber] = useState(1);
   const [selectedSponsor, setSelectedSponsor] = useState(null);
-  const [updateFormName, setUpdateFormName] = useState('');
-  const [updateFormWebsite, setUpdateFormWebsite] = useState('');
+  const [updateFormName, setUpdateFormName] = useState("");
+  const [updateFormWebsite, setUpdateFormWebsite] = useState("");
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchSponsors();
-  }, []);
+  }, [pageNumber]);
 
   const fetchSponsors = async () => {
     try {
-      const response = await SponsorService.getSponsors();
+      const responseAllSponsors = await SponsorService.getSponsors();
+      const allSponsors = responseAllSponsors.data;
+      console.log(eventId);
+      console.log(allSponsors);
+  
+      const response = await EventSponsorService.getSponsors();
       const sponsorsData = response.data;
-      setSponsors(sponsorsData);
+      const filteredSponsors = sponsorsData.filter(
+        (sponsor) => sponsor.eventId === eventId.eventId
+      );
+      console.log(sponsorsData);
+      console.log(filteredSponsors);
+  
+      const matchingSponsors = allSponsors.filter((sponsor) =>
+        filteredSponsors.some(
+          (filteredSponsor) => filteredSponsor.sponsorId === sponsor.id
+        )
+      );
+      console.log(matchingSponsors);
+  
+      setSponsors(matchingSponsors);
     } catch (error) {
       console.log(error);
     }
   };
+  
 
   const handleDeleteSponsor = async () => {
     if (selectedSponsor) {
@@ -49,8 +84,8 @@ function SponsorList({isMainEditClicked}) {
         await SponsorService.updateSponsor(sponsorId, updatedSponsor);
         console.log(`Sponsor with ID ${sponsorId} updated successfully.`);
         setShowUpdateForm(false);
-        setUpdateFormName('');
-        setUpdateFormWebsite('');
+        setUpdateFormName("");
+        setUpdateFormWebsite("");
         fetchSponsors();
         setSelectedSponsor(null);
       } catch (error) {
@@ -74,18 +109,24 @@ function SponsorList({isMainEditClicked}) {
   const renderSponsors = () => {
     return (
       <ListGroup className="text-center">
-        {sponsors.length > 0 ? (
+        {sponsors && sponsors.length > 0 ? (
           sponsors.map((sponsor) => (
             <ListGroupItem key={sponsor.id} className="square border border-2">
               <p>Name: {sponsor.name}</p>
               <p>Website: {sponsor.website}</p>
-              <hr />
+              {/* <hr /> */}
               {isMainEditClicked && (
                 <>
-                  <Button onClick={() => openUpdateModal(sponsor)} className="me-4">
+                  <Button
+                    onClick={() => openUpdateModal(sponsor)}
+                    className="me-4"
+                  >
                     Update
                   </Button>
-                  <Button color="danger" onClick={() => deleteSponsor(sponsor.id)}>
+                  <Button
+                    color="danger"
+                    onClick={() => deleteSponsor(sponsor.id)}
+                  >
                     Delete
                   </Button>
                 </>
@@ -98,7 +139,6 @@ function SponsorList({isMainEditClicked}) {
       </ListGroup>
     );
   };
-  
 
   return (
     <div>
@@ -106,20 +146,24 @@ function SponsorList({isMainEditClicked}) {
 
       <Modal isOpen={isModalOpen} toggle={() => setIsModalOpen(!isModalOpen)}>
         <ModalHeader>Delete Sponsor</ModalHeader>
-        <ModalBody>
-          Are you sure you want to delete this sponsor?
-        </ModalBody>
+        <ModalBody>Are you sure you want to delete this sponsor?</ModalBody>
         <ModalFooter>
           <Button color="danger" onClick={handleDeleteSponsor}>
             Delete
-          </Button>{' '}
-          <Button color="secondary" onClick={() => setIsModalOpen(!isModalOpen)}>
+          </Button>{" "}
+          <Button
+            color="secondary"
+            onClick={() => setIsModalOpen(!isModalOpen)}
+          >
             Cancel
           </Button>
         </ModalFooter>
       </Modal>
 
-      <Modal isOpen={showUpdateForm} toggle={() => setShowUpdateForm(!showUpdateForm)}>
+      <Modal
+        isOpen={showUpdateForm}
+        toggle={() => setShowUpdateForm(!showUpdateForm)}
+      >
         <ModalHeader>Update Sponsor</ModalHeader>
         <ModalBody>
           <Input
@@ -138,8 +182,11 @@ function SponsorList({isMainEditClicked}) {
         <ModalFooter>
           <Button color="primary" onClick={handleUpdateSponsor}>
             Update
-          </Button>{' '}
-          <Button color="secondary" onClick={() => setShowUpdateForm(!showUpdateForm)}>
+          </Button>{" "}
+          <Button
+            color="secondary"
+            onClick={() => setShowUpdateForm(!showUpdateForm)}
+          >
             Cancel
           </Button>
         </ModalFooter>

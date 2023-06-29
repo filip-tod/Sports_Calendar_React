@@ -1,7 +1,7 @@
 import api from "../http-common";
 
-const getSponsors = () => {
-  return api.get("/Sponsor");
+const getSponsors = (params) => {
+  return api.get("/Sponsor", { params });
 };
 
 const getSponsor = (id) => {
@@ -25,7 +25,7 @@ const SponsorService = {
   getSponsor,
   createSponsor,
   updateSponsor,
-  removeSponsor
+  removeSponsor,
 };
 
 export default SponsorService;

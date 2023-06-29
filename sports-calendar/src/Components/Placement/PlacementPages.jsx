@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Pagination, PaginationItem, PaginationLink, ListGroup, ListGroupItem, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
 import PlacementService from '../../Services/PlacementService';
 
-function PlacementPagedList({ currentEventId, isMainEditClicked }) {
+function PlacementPagedList({ updateList, currentEventId, isMainEditClicked }) {
   const [placements, setPlacements] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -17,7 +17,7 @@ function PlacementPagedList({ currentEventId, isMainEditClicked }) {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPlacement, setCurrentPlacement] = useState({ name: '', finishOrder: '' });
-
+  const [isListUpdated, setIsListUpdated] = useState(updateList);
   const fetchPlacements = async (page) => {
     try {
       const response = await PlacementService.getPlacements({
@@ -64,6 +64,13 @@ function PlacementPagedList({ currentEventId, isMainEditClicked }) {
 
     fetchInitialPlacements();
   }, []);
+  
+  useEffect(() => {
+    if (isListUpdated) {
+      fetchPlacements(1);
+      setIsListUpdated(false);
+    }
+  }, [isListUpdated]);
 
   useEffect(() => {
     const totalPages = Math.ceil(totalCount / pageSize);
@@ -149,7 +156,7 @@ function PlacementPagedList({ currentEventId, isMainEditClicked }) {
               <p>Name: {placement.name}</p>
               <p>Finish Order: {placement.finishOrder}</p>
               {/* {placement.eventId && <p>Event ID: {placement.eventId}</p>} */}
-              <hr />
+              {/* <hr /> */}
               {isMainEditClicked && (
                 <>
                   <Button onClick={() => openUpdateModal(placement)} className="me-4">

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PlacementService from '../../Services/PlacementService';
 
-function CreateForm({ currentEventId, fetchPlacements }) {
+function CreateForm({ setUpdateList, currentEventId }) {
   const [createFormName, setCreateFormName] = useState('');
   const [createFormFinishOrder, setCreateFormFinishOrder] = useState('');
 
@@ -16,8 +16,9 @@ function CreateForm({ currentEventId, fetchPlacements }) {
       });
 
       console.log('Placement created successfully.');
-
-      fetchPlacements();
+      // updateList.updateList=true;
+      setUpdateList(true);
+      // fetchPlacements();
       setCreateFormName('');
       setCreateFormFinishOrder('');
     } catch (error) {

@@ -19,8 +19,11 @@ import PlacementDisplay from "../Placement/PlacementMain";
 import Review from "../Review/Review";
 import RewviewMain from "../Review/ReviewMain";
 import SponsorDisplay from "../Sponsor/SponsorMain";
+import SponsorList from "../Sponsor/SponsorPages";
+import ReviewPost from "../Review/ReviewPost";
+import CreateForm from "../Placement/PlacementPost";
 
-function Event() {
+function Event({ userInfo }) {
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
 
@@ -94,6 +97,9 @@ function Event() {
         );
         fetchLocations();
         fetchSports();
+        console.log("event data");
+        console.log(eventData);
+        console.log(userInfo.id);
         setEvent(eventData);
         setStartDate(startDate.toLocaleDateString());
         setEndDate(endDate.toLocaleDateString());
@@ -106,12 +112,10 @@ function Event() {
           // 20,
           // "DESC",
           // "Rating",
-          eventId:eventData.id}
-        );
-
+          eventId: eventData.id,
+        });
         setReviews(reviewsResponse.data.data);
         console.log(reviewsResponse.data.data);
-        //console.log(reviews.data);
       } catch (error) {
         console.log("Error fetching event data:", error);
       }
@@ -123,7 +127,9 @@ function Event() {
   if (!event) {
     return <p>Loading event...</p>;
   }
-
+  const canEditEvent =
+    userInfo.role === "Super_admin" ||
+    (userInfo.role === "Organizer" && userInfo.Id === event.createdByUserId);
   const handleEdit = (fieldName) => {
     setEditableFields((prevEditableFields) => ({
       ...prevEditableFields,
@@ -140,8 +146,6 @@ function Event() {
     try {
       await EventService.updateEvent(eventId, updatedEvent);
       console.log("Event updated successfully");
-
-      // Fetch the updated event data
       const response = await EventService.getEvent(eventId);
       const eventData = response.data;
 
@@ -205,9 +209,11 @@ function Event() {
 
   return (
     <Container className="mt-5">
-      <Button color="primary" onClick={handleMainEditClick}>
-        Main Edit
-      </Button>
+      {canEditEvent && (
+        <Button color="primary" onClick={handleMainEditClick}>
+          Main Edit
+        </Button>
+      )}
       <Row>
         <Col className="bg-light border text-center align-items-center pt-4 p-4">
           {isMainEditClicked ? (
@@ -406,7 +412,6 @@ function Event() {
       </Row>
       <Row>
         <Col className="bg-light border text-center align-items-center pt-4 p-4">
-          {/* <p>{event.description}</p> */}
           {isMainEditClicked ? (
             <>
               {editableFields.description ? (
@@ -452,50 +457,24 @@ function Event() {
           </Col>
         )}
       </Row>
-      <h4 className="mt-4">Sponsors:</h4>
-      <ListGroup>
-        {event.sponsors.map((sponsor) => (
-          <ListGroupItem
-            key={sponsor.id}
-            action
-            href={sponsor.website}
-            tag="a"
-            target="_blank"
-          >
-            {sponsor.name}
-          </ListGroupItem>
-        ))}
-      </ListGroup>
-
-      <h4 className="mt-4">Placements:</h4>
-      <ListGroup>
-        {placements.map((placement) => (
-          <ListGroupItem key={placement.id}>
-            {`${placement.finishOrder}. ${placement.name}`}
-          </ListGroupItem>
-        ))}
-      </ListGroup>
       <h4 className="mt-4">Reviews:</h4>
-      <Review eventId={eventId} isMainEditClicked={isMainEditClicked.valueOf()}/>
-      {/* <RewviewMain eventId={eventId}/> */}
-      {/* <ListGroup className="text-center">
-        {reviews && reviews.length > 0 ? (
-          reviews.map((review) => (
-            <ListGroupItem key={review.id} className="square border border-2">
-              {`User: ${review.userName} Rating: ${review.rating}`}
-              <p> {review.content}</p>
-              {/* {isMainEditClicked &&(
-                <button onClick={()=>handleEditReview(review.eventId)}>Edit</button>
-              )} }
-            </ListGroupItem>
-          ))
-        ) : (
-          <ListGroupItem>No reviews available</ListGroupItem>
-        )}
-      </ListGroup> */}
-      <PlacementDisplay currentEventId={eventId} isMainEditClicked={isMainEditClicked.valueOf()}/>
-      <SponsorDisplay isMainEditClicked={isMainEditClicked.valueOf()} />
-      
+      <Review
+        eventId={eventId}
+        isMainEditClicked={isMainEditClicked.valueOf()}
+      />
+      {isMainEditClicked && <ReviewPost />}
+      <h4 className="mt-4">Placements:</h4>
+      <PlacementDisplay
+        currentEventId={eventId}
+        isMainEditClicked={isMainEditClicked.valueOf()}
+      />
+      <h4 className="mt-4">Sponsors:</h4>
+      <SponsorList
+        eventId={eventId}
+        isMainEditClicked={isMainEditClicked.valueOf()}
+      />
+      {/* {isMainEditClicked && <EventSponsorPost />} */}
+      {/* potrebno napraviti EventSponsorPost komponentu i ubaciti ju ovdje te joj poslati event objekt ili samo id za event */}
     </Container>
   );
 }

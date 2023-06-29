@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import SponsorList from './SponsorPages';
-import SponsorPost from './SponsorPost';
-import SponsorService from '../../Services/SponsorService';
-
-function SponsorDisplay({isMainEditClicked}) {
+import React, { useState, useEffect } from "react";
+import SponsorList from "./SponsorPages";
+import SponsorPost from "./SponsorPost";
+import SponsorService from "../../Services/SponsorService";
+import EventSponsorService from "../../Services/EventSponsorService";
+function SponsorDisplay({ currentEventId, isMainEditClicked }) {
   const [sponsors, setSponsors] = useState([]);
 
   useEffect(() => {
@@ -12,9 +12,26 @@ function SponsorDisplay({isMainEditClicked}) {
 
   const fetchSponsors = async () => {
     try {
-      const response = await SponsorService.getSponsors();
+      const responseAllSponsors = await SponsorService.getSponsors();
+      const allSponsors = responseAllSponsors.data;
+      console.log(allSponsors);
+
+      const response = await EventSponsorService.getSponsors();
       const sponsorsData = response.data;
-      setSponsors(sponsorsData);
+      const filteredSponsors = sponsorsData.filter(
+        (sponsor) => sponsor.eventId === currentEventId
+      );
+      console.log(sponsorsData);
+      console.log(filteredSponsors);
+
+      const matchingSponsors = allSponsors.filter((sponsor) =>
+        filteredSponsors.some(
+          (filteredSponsor) => filteredSponsor.sponsorId === sponsor.id
+        )
+      );
+      console.log(matchingSponsors);
+
+      setSponsors(matchingSponsors);
     } catch (error) {
       console.log(error);
     }
@@ -30,7 +47,9 @@ function SponsorDisplay({isMainEditClicked}) {
 
   return (
     <div className="sDisplayDiv">
-      <SponsorList sponsors={sponsors} fetchSponsors={fetchSponsors} isMainEditClicked={isMainEditClicked} />
+      <SponsorList
+        isMainEditClicked={isMainEditClicked}
+      />
       <SponsorPost onAddSponsor={addSponsor} />
     </div>
   );

@@ -35,33 +35,46 @@ function App() {
     setRoles(localStorage.roles ? JSON.parse(localStorage.roles) : []);
   }, [loggedIn]);
 
+  const tokenData = JSON.parse(localStorage.getItem('token'));
+  const accessToken = tokenData ? tokenData.access_token : null;
+  const role = tokenData ? tokenData.Role : null;
+  const userId = tokenData ? tokenData.Id : null;
+  const expires = tokenData ? tokenData.expires : null;
+
+  const userInfo = {
+    accessToken,
+    role,
+    userId,
+    expires
+  };
 
   const router = createBrowserRouter([
     {
       path: '',
-      element: <RootLayout loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>,
+      element: <RootLayout loggedIn={loggedIn} setLoggedIn={setLoggedIn} />,
       children: [
-        { path: '', element: <Home /> },
-        { path: '/login', element: <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>},
-        { path: '/register', element: <UserRegister />},
-        { path: '/Review', element: <RewviewMain />},
+        { path: '', element: <Home userInfo={userInfo} /> },
+        { path: '/login', element: <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} /> },
+        { path: '/register', element: <UserRegister /> },
+        { path: '/Review', element: <RewviewMain userInfo={userInfo} /> },
         { path: 'City', element: <CityDisplay /> },
         { path: 'County', element: <CountyDisplay /> },
         { path: 'Location', element: <LocationDisplay /> },
         { path: 'update-city/:id', element: <CityPut /> },
         { path: 'update-county/:id', element: <UpdateCounty /> },
         { path: 'update-location/:id', element: <UpdateLocation /> },
-        { path: 'Placement', element: < PlacementDisplay /> },
+        { path: 'Placement', element: <PlacementDisplay /> },
         { path: 'Review', element: <RewviewMain /> },
         // { path: "/Review/:eventId", element: <Review /> },
-        { path: "/Home", element: <Home /> },
-        { path: "/Event/:eventId", element: <Event /> },
-        { path: "/EventPost", element: <EventPost /> },
-        { path: "Sponsor", element: <SponsorDisplay />},
+        { path: "/Home", element: <Home userInfo={userInfo} /> },
+        { path: "/Event/:eventId", element: <Event userInfo={userInfo} /> },
+        { path: "/EventPost", element: <EventPost userInfo={userInfo} /> },
+        { path: "Sponsor", element: <SponsorDisplay /> },
       ],
     },
   ]);
 
   return <RouterProvider router={router} />;
 }
+
 export default App;

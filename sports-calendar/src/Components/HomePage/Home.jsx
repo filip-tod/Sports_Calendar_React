@@ -30,7 +30,7 @@ function useFetchEventData() {
   return { datesToAddClassTo, events };
 }
 
-function Home() {
+function Home({ userInfo }) {
   const { datesToAddClassTo, events } = useFetchEventData();
   const [value, setValue] = useState(new Date());
   const [clickedDateEvents, setClickedDateEvents] = useState([]);
@@ -74,9 +74,13 @@ function Home() {
     setSelectedEventId(eventId);
     navigate(`/Event/:${eventId}`);
   };
-  const handleCreateEventClick = () =>{
+
+  const handleCreateEventClick = () => {
     navigate(`/EventPost`);
-  }
+  };
+
+  const canCreateEvent =
+    userInfo.role === "Super_admin" || userInfo.role === "Organizer";
 
   return (
     <div className="calendar-container">
@@ -102,12 +106,16 @@ function Home() {
                   </Link>
                 </li>
               ))}
-              <Button onClick={()=>handleCreateEventClick()}>Create event</Button>
+              {canCreateEvent && (
+                <Button onClick={handleCreateEventClick}>Create event</Button>
+              )}
             </ul>
           ) : (
             <>
-            <p>No events found for this date.</p>
-            <Button onClick={()=>handleCreateEventClick()}>Create event</Button>
+              <p>No events found for this date.</p>
+              {canCreateEvent && (
+                <Button onClick={handleCreateEventClick}>Create event</Button>
+              )}
             </>
           )}
         </ModalBody>
@@ -117,7 +125,6 @@ function Home() {
           </Button>
         </ModalFooter>
       </Modal>
-      {/* <Button onClick={()=>handleCreateEventClick()}>Create event</Button> */}
     </div>
   );
 }
