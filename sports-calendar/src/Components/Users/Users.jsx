@@ -2,11 +2,15 @@ import { useState, useEffect } from 'react';
 import { Table, Button } from 'reactstrap';
 import UserService from '../../Services/UserService';
 import RoleService from '../../Services/RoleService';
+import ReactPaginate from 'react-paginate';
+import '../../Style/Users.css';
 
 const Users = () => {
 
     const [users, setUsers] = useState([]);
     const [roles, setRoles] = useState([]);
+    const [pagination, setPagination] = useState([]);
+    const [pageNumber, setPageNumber] = useState(0);
 
     useEffect(() => {
         const getRoles = () => {
@@ -18,8 +22,6 @@ const Users = () => {
                             access: role.access,
                         }));
                         setRoles(mappedRoles);
-                        console.log(mappedRoles);
-                        console.log(response);
                     });
             } catch (error) {
                 console.error('Greška prilikom dohvata rola:', error);
@@ -29,39 +31,50 @@ const Users = () => {
         getRoles();
     }, []);
 
-    useEffect(() => {
-        const getUsers = () => {
-            try {
-                UserService.getUsers()
-                    .then(function (response) {
-                        const mappedUsers = response.data.data.map(user => {
-                            const userRole = roles.find(role => role.id === user.roleId);
-                            const role = userRole ? userRole.access : "empty";
+    const getUsers = () => {
+        try {
+            UserService.getUsers((pageNumber + 1), 10)
+                .then(function (response) {
+                    const mappedUsers = response.data.data.map(user => {
+                        const userRole = roles.find(role => role.id === user.roleId);
+                        const role = userRole ? userRole.access : "empty";
 
-                            return {
-                                id: user.id,
-                                firstName: user.firstName,
-                                lastName: user.lastName,
-                                email: user.email,
-                                role: role,
-                                username: user.username,
-                                isActive: user.isActive ? "Active" : "Inactive",
-                            };
-                        });
-                        setUsers(mappedUsers);
-                        console.log(mappedUsers);
-                        console.log(response);
-                        console.log(roles);
+                        return {
+                            id: user.id,
+                            firstName: user.firstName,
+                            lastName: user.lastName,
+                            email: user.email,
+                            role: role,
+                            username: user.username,
+                            isActive: user.isActive ? "Active" : "Inactive",
+                        };
                     });
-            } catch (error) {
-                console.error('Greška prilikom dohvata rola:', error);
-            }
-        };
+                    setUsers(mappedUsers);
+                    setPagination({
+                        currentPage: response.data.currentPage,
+                        hasNext: response.data.hasNext,
+                        hasPrevious: response.data.hasPrevious,
+                        pageSize: response.data.pageSize,
+                        totalCount: response.data.totalCount,
+                        totalPages: response.data.totalPages,
+                    });
+                    console.log(response.data)
+                });
+        } catch (error) {
+            console.error('Greška prilikom dohvata rola:', error);
+        }
+    };
 
+    useEffect(() => {
         if (roles.length > 0) {
             getUsers();
         }
     }, [roles]);
+
+    const handleClick = (event) => {
+        console.log(event.selected)
+        setPageNumber(event.selected + 1)
+    }
 
     const rows = [];
 
@@ -86,12 +99,15 @@ const Users = () => {
                 <th>
                     {user.isActive}
                 </th>
+                <Button color="primary">Edit</Button>
+                <Button color='warning'>Delete</Button>
             </tr>
         )
     });
 
     return (
-        <div className='table-container'>
+        <div className='table-container' style={{ marginTop: '50px' }}>
+            <h3 style={{ marginLeft: '30px' }}>Users: </h3>
             <Table hover>
                 <thead>
                     <tr>
@@ -119,6 +135,23 @@ const Users = () => {
                     {rows}
                 </tbody>
             </Table>
+            <ReactPaginate
+                breakLabel=""
+                nextLabel={"next >"}
+                onPageChange={handleClick}
+                pageRangeDisplayed={pagination.pageSize}
+                pageCount={pagination.totalPages}
+                previousLabel={"< previous"}
+                renderOnZeroPageCount={null}
+                containerClassName={"pagination-container"}
+                pageClassName={"page-item"}
+                pageLinkClassName={"page-link"}
+                activeClassName={"active"}
+                previousClassName={"page-item"}
+                previousLinkClassName={"page-link"}
+                nextClassName={"page-item"}
+                nextLinkClassName={"page-link"}
+            />
         </div>
     )
 }

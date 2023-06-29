@@ -1,7 +1,15 @@
 import api from "../http-common";
 
-const getUsers = () => {
-  return api.get("/User");
+const getUsers = (pageNumber, pageSize) => {
+
+  const number = pageNumber || 1;
+  const size = pageSize || 10;
+  return api.get("/User", {
+    params: {
+      pageNumber: number,
+      pageSize: size
+    }
+  });
 };
 
 const getUser = (id) => {
