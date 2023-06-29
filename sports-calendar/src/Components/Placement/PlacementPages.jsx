@@ -19,7 +19,6 @@ function PlacementPagedList({currentEventId}) {
   const [updateFormFinishOrder, setUpdateFormFinishOrder] = useState('');
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const getToken = localStorage.getItem('token');
-  const authToken = `'Bearer ${JSON.parse(getToken).access_token}'`;
   
 
   const fetchPlacements = async (page) => {

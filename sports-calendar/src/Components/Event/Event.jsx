@@ -475,7 +475,7 @@ function Event() {
         ))}
       </ListGroup>
       <h4 className="mt-4">Reviews:</h4>
-      <Review eventId={eventId}/>
+      <Review eventId={eventId} isMainEditClicked={isMainEditClicked.valueOf()}/>
       {/* <RewviewMain eventId={eventId}/> */}
       {/* <ListGroup className="text-center">
         {reviews && reviews.length > 0 ? (

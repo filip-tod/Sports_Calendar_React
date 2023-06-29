@@ -12,7 +12,7 @@ import {
 } from "reactstrap";
 import { useParams } from "react-router";
 
-function Review() {
+function Review({ isMainEditClicked }) {
   const eventId = useParams();
   const [reviews, setReviews] = useState(null);
   const [orderBy, setOrderBy] = useState("Rating");
@@ -90,17 +90,31 @@ function Review() {
             <ListGroupItem key={review.id} className="square border border-2">
               {`User: ${review.userName}  Rating: ${review.rating}`}
               <p> {review.content}</p>
-              <Button onClick={() => openUpdateModal(review)}>Update</Button>
-              <Button color="danger" onClick={() => deleteReview(review.id)}>
-                Delete
-              </Button>
+              {isMainEditClicked && (
+                <>
+                  <Button
+                    onClick={() => openUpdateModal(review)}
+                    className="me-4"
+                  >
+                    Update
+                  </Button>
+                  <Button
+                    color="danger"
+                    onClick={() => deleteReview(review.id)}
+                  >
+                    Delete
+                  </Button>
+                </>
+              )}
             </ListGroupItem>
           ))
         ) : (
           <ListGroupItem>No reviews available</ListGroupItem>
         )}
       </ListGroup>
-      <button onClick={previousPage}>Previous Page</button>
+      <button onClick={previousPage} className="me-4 mt-2">
+        Previous Page
+      </button>
       <button onClick={nextPage}>Next Page</button>
 
       <Modal isOpen={isModalOpen} toggle={() => setIsModalOpen(!isModalOpen)}>
