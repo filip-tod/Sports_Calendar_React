@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import '../../Style/placementPages.css';
+import { ListGroup, ListGroupItem, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
 import SponsorService from '../../Services/SponsorService';
 
-function SponsorList() {
+function SponsorList({isMainEditClicked}) {
   const [sponsors, setSponsors] = useState([]);
-  const [newSponsorName, setNewSponsorName] = useState('');
-  const [newSponsorWebsite, setNewSponsorWebsite] = useState('');
-  const [selectedSponsorId, setSelectedSponsorId] = useState(null);
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [selectedSponsor, setSelectedSponsor] = useState(null);
+  const [updateFormName, setUpdateFormName] = useState('');
+  const [updateFormWebsite, setUpdateFormWebsite] = useState('');
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchSponsors();
@@ -23,101 +24,126 @@ function SponsorList() {
     }
   };
 
-  const handleNameChange = (e) => {
-    setNewSponsorName(e.target.value);
+  const handleDeleteSponsor = async () => {
+    if (selectedSponsor) {
+      const sponsorId = selectedSponsor;
+      try {
+        await SponsorService.removeSponsor(sponsorId);
+        console.log(`Sponsor with ID ${sponsorId} deleted successfully.`);
+        fetchSponsors();
+        setSelectedSponsor(null);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
-  const handleWebsiteChange = (e) => {
-    setNewSponsorWebsite(e.target.value);
-  };
-
-  const selectSponsor = (sponsorId) => {
-    setSelectedSponsorId(sponsorId);
-    const selectedSponsor = sponsors.find((sponsor) => sponsor.id === sponsorId);
-    setNewSponsorName(selectedSponsor.name);
-    setNewSponsorWebsite(selectedSponsor.website);
-    setIsUpdating(true);
-  };
-
-  const cancelUpdate = () => {
-    setIsUpdating(false);
-    setSelectedSponsorId(null);
-    setNewSponsorName('');
-    setNewSponsorWebsite('');
-  };
-
-  const updateSponsor = async () => {
-    try {
+  const handleUpdateSponsor = async () => {
+    if (selectedSponsor) {
+      const sponsorId = selectedSponsor;
       const updatedSponsor = {
-        name: newSponsorName,
-        website: newSponsorWebsite,
+        name: updateFormName,
+        website: updateFormWebsite,
       };
-      await SponsorService.updateSponsor(selectedSponsorId, updatedSponsor);
-      fetchSponsors();
-      setIsUpdating(false);
-      setSelectedSponsorId(null);
-      setNewSponsorName('');
-      setNewSponsorWebsite('');
-    } catch (error) {
-      console.log(error);
+      try {
+        await SponsorService.updateSponsor(sponsorId, updatedSponsor);
+        console.log(`Sponsor with ID ${sponsorId} updated successfully.`);
+        setShowUpdateForm(false);
+        setUpdateFormName('');
+        setUpdateFormWebsite('');
+        fetchSponsors();
+        setSelectedSponsor(null);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
-  const deleteSponsor = async (id) => {
-    try {
-      await SponsorService.removeSponsor(id);
-      setSponsors((prevSponsors) =>
-        prevSponsors.filter((sponsor) => sponsor.id !== id)
-      );
-    } catch (error) {
-      console.log(error);
-    }
+  const openUpdateModal = (sponsor) => {
+    setSelectedSponsor(sponsor.id);
+    setUpdateFormName(sponsor.name);
+    setUpdateFormWebsite(sponsor.website);
+    setShowUpdateForm(true);
   };
 
-  const addSponsor = () => {
-    fetchSponsors();
+  const deleteSponsor = (sponsorId) => {
+    setSelectedSponsor(sponsorId);
+    setIsModalOpen(true);
   };
 
   const renderSponsors = () => {
-    return sponsors.map((sponsor) => (
-      <div key={sponsor.id}>
-        <p>Name: {sponsor.name}</p>
-        <p>Website: {sponsor.website}</p>
-        <button onClick={() => selectSponsor(sponsor.id)}>Edit</button>
-        <button onClick={() => deleteSponsor(sponsor.id)}>Delete</button>
-        <hr />
-      </div>
-    ));
+    return (
+      <ListGroup className="text-center">
+        {sponsors.length > 0 ? (
+          sponsors.map((sponsor) => (
+            <ListGroupItem key={sponsor.id} className="square border border-2">
+              <p>Name: {sponsor.name}</p>
+              <p>Website: {sponsor.website}</p>
+              <hr />
+              {isMainEditClicked && (
+                <>
+                  <Button onClick={() => openUpdateModal(sponsor)} className="me-4">
+                    Update
+                  </Button>
+                  <Button color="danger" onClick={() => deleteSponsor(sponsor.id)}>
+                    Delete
+                  </Button>
+                </>
+              )}
+            </ListGroupItem>
+          ))
+        ) : (
+          <ListGroupItem>No sponsors available</ListGroupItem>
+        )}
+      </ListGroup>
+    );
   };
+  
 
   return (
-    <div className="sponsor-list">
-      <h1>Sponsor List</h1>
-      <div className="sponsor-container">{renderSponsors()}</div>
+    <div>
+      {renderSponsors()}
 
-      {isUpdating && (
-        <div>
-          <h2>Update Sponsor</h2>
-          <div>
-            <label>Name:</label>
-            <input
-              type="text"
-              value={newSponsorName}
-              onChange={handleNameChange}
-            />
-          </div>
-          <div>
-            <label>Website:</label>
-            <input
-              type="text"
-              value={newSponsorWebsite}
-              onChange={handleWebsiteChange}
-            />
-          </div>
-          <button onClick={updateSponsor}>Update Sponsor</button>
-          <button onClick={cancelUpdate}>Cancel</button>
-        </div>
-      )}
+      <Modal isOpen={isModalOpen} toggle={() => setIsModalOpen(!isModalOpen)}>
+        <ModalHeader>Delete Sponsor</ModalHeader>
+        <ModalBody>
+          Are you sure you want to delete this sponsor?
+        </ModalBody>
+        <ModalFooter>
+          <Button color="danger" onClick={handleDeleteSponsor}>
+            Delete
+          </Button>{' '}
+          <Button color="secondary" onClick={() => setIsModalOpen(!isModalOpen)}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+      <Modal isOpen={showUpdateForm} toggle={() => setShowUpdateForm(!showUpdateForm)}>
+        <ModalHeader>Update Sponsor</ModalHeader>
+        <ModalBody>
+          <Input
+            type="text"
+            placeholder="Name"
+            value={updateFormName}
+            onChange={(e) => setUpdateFormName(e.target.value)}
+          />
+          <Input
+            type="text"
+            placeholder="Website"
+            value={updateFormWebsite}
+            onChange={(e) => setUpdateFormWebsite(e.target.value)}
+          />
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={handleUpdateSponsor}>
+            Update
+          </Button>{' '}
+          <Button color="secondary" onClick={() => setShowUpdateForm(!showUpdateForm)}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 }

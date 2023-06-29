@@ -1,16 +1,12 @@
-import React, { useState } from "react";
-import {PlacementPagedList, fetchPlacements} from "./PlacementPages";
-import CreateForm from './PlacementPost';
+import React from "react";
+import { PlacementPagedList } from "./PlacementPages";
+import CreateForm from "./PlacementPost";
 
-function PlacementDisplay(currentEventId) {
-  const handleFetchPlacements = async (page) => {
-    await fetchPlacements(page);
-  }
-
+function PlacementDisplay({ currentEventId, isMainEditClicked }) {
   return (
     <div className="pDisplayDiv">
-      <PlacementPagedList currentEventId={currentEventId} />
-      <CreateForm currentEventId={currentEventId} fetchPlacements={handleFetchPlacements} />
+      <PlacementPagedList currentEventId={currentEventId} isMainEditClicked={isMainEditClicked} />
+      <CreateForm currentEventId={currentEventId} />
     </div>
   );
 }

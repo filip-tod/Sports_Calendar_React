@@ -18,6 +18,7 @@ import SportService from "../../Services/SportService";
 import PlacementDisplay from "../Placement/PlacementMain";
 import Review from "../Review/Review";
 import RewviewMain from "../Review/ReviewMain";
+import SponsorDisplay from "../Sponsor/SponsorMain";
 
 function Event() {
   const { eventId } = useParams();
@@ -492,7 +493,8 @@ function Event() {
           <ListGroupItem>No reviews available</ListGroupItem>
         )}
       </ListGroup> */}
-      <PlacementDisplay currentEventId={eventId}/>
+      <PlacementDisplay currentEventId={eventId} isMainEditClicked={isMainEditClicked.valueOf()}/>
+      <SponsorDisplay isMainEditClicked={isMainEditClicked.valueOf()} />
       
     </Container>
   );
