@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import LocationService from '../../Services/LocationService';
-import CityService from '../../Services/CityService';
-import CountyService from '../../Services/CountyService';
-import { v4 as uuidv4 } from 'uuid'; // import UUID generator
+import React, { useState, useEffect } from "react";
+import LocationService from "../../Services/LocationService";
+import CityService from "../../Services/CityService";
+import CountyService from "../../Services/CountyService";
+import { v4 as uuidv4 } from "uuid"; // import UUID generator
 
 function LocationPost() {
-
-
   const [location, setLocation] = useState({
     Id: uuidv4(), // Generate a new UUID for the location
     Venue: "",
@@ -19,7 +17,7 @@ function LocationPost() {
     IsActive: true,
   });
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     //Here //
     const { name, value } = event.target;
     setLocation({ ...location, [name]: value });
@@ -27,10 +25,10 @@ function LocationPost() {
 
   const createNewLocation = () => {
     LocationService.createLocation(location)
-    .then(response => {
-      console.log(response.data);
+      .then((response) => {
+        console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   };
@@ -40,19 +38,20 @@ function LocationPost() {
 
   useEffect(() => {
     CityService.getCitys()
-      .then(response => {
+      .then((response) => {
         setCities(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
     // Fetch counties
     CountyService.getCounties()
-      .then(response => {
+      .then((response) => {
         setCounties(response.data);
+        console.log(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }, []);
@@ -63,30 +62,47 @@ function LocationPost() {
       <form>
         <label>
           Venue:
-          <input type="text" name="Venue" value={location.Venue} onChange={handleInputChange} />
+          <input
+            type="text"
+            name="Venue"
+            value={location.Venue}
+            onChange={handleInputChange}
+          />
         </label>
         <label>
           <h1>City</h1>
-          <select name="CityId" value={location.CityId} onChange={handleInputChange}>
-  {cities.map(city => (
-    <option key={city.id} value={city.id}>{city.name}</option>
-  ))}
-</select>
-
-        </label>
-        <label>
-          <h1>County</h1>
-          <select name="CountyId" value={location.CountyId} onChange={handleInputChange}>
-            {counties.map(county => (
-              <option key={county.id} value={county.id}>{county.name}</option>
+          <select
+            name="CityId"
+            value={location.CityId}
+            onChange={handleInputChange}
+          >
+            {cities.map((city) => (
+              <option key={city.id} value={city.id}>
+                {city.name}
+              </option>
             ))}
           </select>
         </label>
-        <button type="button" onClick={createNewLocation}>Create</button>
+        <label>
+          <h1>County</h1>
+          <select
+            name="CountyId"
+            value={location.CountyId}
+            onChange={handleInputChange}
+          >
+            {counties.map((county) => (
+              <option key={county.id} value={county.id}>
+                {county.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button type="button" onClick={createNewLocation}>
+          Create
+        </button>
       </form>
     </div>
   );
-
 }
 
 export default LocationPost;

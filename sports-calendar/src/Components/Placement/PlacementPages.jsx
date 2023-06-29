@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import axios from 'axios';
 import '../../Style/placementPages.css';
+import PlacementService from '../../Services/PlacementService';
 
 function PlacementPagedList({currentEventId}) {
   const [placements, setPlacements] = useState([]);
@@ -19,21 +20,16 @@ function PlacementPagedList({currentEventId}) {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const getToken = localStorage.getItem('token');
   const authToken = `'Bearer ${JSON.parse(getToken).access_token}'`;
+  
 
   const fetchPlacements = async (page) => {
     try {
-      const response = await axios.get('https://localhost:44380/api/placement', {
-        params: {
+      const response = await PlacementService.getPlacements({
           orderBy,
           sortOrder,
           pageSize,
           pageNumber: page,
           eventId: currentEventId,
-        },
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: authToken,
-        },
       });
 
       const responseData = response.data;
@@ -49,18 +45,12 @@ function PlacementPagedList({currentEventId}) {
   useEffect(() => {
     const fetchInitialPlacements = async () => {
       try {
-        const response = await axios.get('https://localhost:44380/api/placement', {
-          params: {
+        const response = await PlacementService.getPlacements({
             orderBy,
             sortOrder,
             pageSize,
             pageNumber: 1,
             eventId: currentEventId,
-          },
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: authToken,
-          },
         });
 
         const responseData = response.data;
@@ -110,12 +100,7 @@ function PlacementPagedList({currentEventId}) {
     if (selectedPlacement) {
       const placementId = selectedPlacement;
       try {
-        await axios.delete(`https://localhost:44380/api/placement/${placementId}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: authToken,
-          },
-        });
+        await PlacementService.removePlacement(placementId);
         console.log(`Placement with ID ${placementId} deleted successfully.`);
         fetchPlacements(currentPage);
         setSelectedPlacement(null);
@@ -147,14 +132,9 @@ function PlacementPagedList({currentEventId}) {
     if (selectedPlacement) {
       const placementId = selectedPlacement;
       try {
-        await axios.put(`https://localhost:44380/api/placement/${placementId}`, {
+        await PlacementService.updatePlacement(placementId, {
           name: updateFormName,
           finishOrder: updateFormFinishOrder,
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: authToken,
-          },
         });
 
         console.log(`Placement with ID ${placementId} updated successfully.`);

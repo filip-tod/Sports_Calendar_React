@@ -34,7 +34,7 @@ const UpdateCity = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-
+    console.log(city);
     CityService.updateCity(id, city)
       .then(response => {
         console.log(response.data);
