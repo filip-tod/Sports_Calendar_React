@@ -1,0 +1,87 @@
+.placement-paged-list {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .filter-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .filter-container label {
+    margin-right: 10px;
+  }
+  
+  select {
+    padding: 5px;
+    border-radius: 3px;
+  }
+  
+  .placement-paged-list button {
+    padding: 5px 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: flex-start; 
+    margin-top: 20px;
+  }
+  
+  .action-buttons button {
+    margin-left: 10px;
+    background-color: #f44336;
+  }
+  
+  .placement-container {
+    margin-bottom: 20px;
+  }
+  
+  .update-form {
+    margin: 20px 0;
+  }
+  
+  .update-form h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  form div {
+    margin-bottom: 10px;
+  }
+  
+  label {
+    display: block;
+  }
+  
+  input[type="text"] {
+    padding: 5px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  hr {
+    margin: 10px 0;
+    border: none;
+    border-top: 1px solid #ccc;
+  }
+  

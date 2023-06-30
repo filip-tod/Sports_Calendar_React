@@ -1,0 +1,23 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .nav-link {
+    margin-left: 10px;
+  }
+  
+  .navbar-nav.ml-auto {
+    display: flex;
+    align-items: center;
+    flex-grow: unset !important;
+  }
+  
+  .disable-flex-grow {
+    flex-grow: unset !important;
+  }
+
+  .navbar-collapse {
+    flex-grow: unset !important;
+  }

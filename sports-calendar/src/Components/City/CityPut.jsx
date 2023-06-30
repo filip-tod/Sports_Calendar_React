@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import CityService from '../../Services/CityService';
 
-const CityPut = () => {
+const UpdateCity = () => {
+  const { id } = useParams();
   const [city, setCity] = useState({
     Id: "",
     Name: "",
@@ -12,6 +14,17 @@ const CityPut = () => {
     IsActive: true
   });
 
+  useEffect(() => {
+    CityService.fetchCityById(id)
+      .then(response => {
+        const cityData = response.data;
+        setCity(cityData);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, [id]);
+
   const handleCityNameChange = event => {
     setCity(prevCity => ({
       ...prevCity,
@@ -19,41 +32,17 @@ const CityPut = () => {
     }));
   };
 
-  const handleIdChange = event => {
-    const newId = event.target.value;
-    setCity(prevCity => ({
-      ...prevCity,
-      Id: newId
-    }));
-
-    // Fetch city details based on the entered Id
-    if (newId !== "") {
-      axios
-        .get(`https://localhost:44380/api/City/${newId}`)
-        .then(response => {
-          const cityData = response.data;
-          setCity(prevCity => ({
-            ...prevCity,
-            Name: cityData.Name,
-            IsActive: cityData.IsActive
-          }));
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    }
-  };
-
   const handleSubmit = event => {
     event.preventDefault();
-
-    axios
-      .put(`https://localhost:44380/api/City/${city.Id}`, city)
+    console.log(city);
+    CityService.updateCity(id, city)
       .then(response => {
         console.log(response.data);
+        // Handle successful update
       })
       .catch(error => {
         console.error(error);
+        // Handle error
       });
   };
 
@@ -62,16 +51,8 @@ const CityPut = () => {
       <h3>Update City</h3>
       <form onSubmit={handleSubmit}>
         <label>
-          City GUID:
-          <input type="text" value={city.Id} onChange={handleIdChange} />
-        </label>
-        <label>
           City Name:
           <input type="text" value={city.Name} onChange={handleCityNameChange} />
-        </label>
-        <label>
-          Still active?
-          <input type="checkbox" checked={city.IsActive} onChange={() => setCity(prevCity => ({ ...prevCity, IsActive: !prevCity.IsActive }))} />
         </label>
         <button type="submit">Update</button>
       </form>
@@ -79,4 +60,4 @@ const CityPut = () => {
   );
 };
 
-export default CityPut;
+export default UpdateCity;

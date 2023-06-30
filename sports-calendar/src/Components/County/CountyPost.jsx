@@ -8,8 +8,8 @@ const CountyPost = () => {
     IsActive: true,
     UpdatedByUserId: "affb4f68-ae4f-4118-9c4d-0b4aa97324d4",
     CreatedByUserId: "affb4f68-ae4f-4118-9c4d-0b4aa97324d4",
-    DateCreated: new Date(Date.UTC()),
-    DateUpdated: new Date(Date.UTC())
+    DateCreated: "2023-06-13T00:00:00Z",
+    DateUpdated: "2023-06-13T00:00:00Z"
   });
 
   const handleCountyNameChange = event => {
@@ -23,7 +23,7 @@ const CountyPost = () => {
     event.preventDefault();
 
     axios
-      .post('https://localhost:44380/api/County/1', county)
+      .post('https://localhost:44380/api/County/', county)
       .then(response => {
         console.log(response.data);
       })

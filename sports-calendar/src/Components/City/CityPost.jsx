@@ -5,7 +5,7 @@ import axios from 'axios';
 const CityPost = () => {
   const [city, setCity] = useState({
     Id: "",
-  Name: "",
+    Name: "",
     IsActive: true,
     UpdatedByUserId: "affb4f68-ae4f-4118-9c4d-0b4aa97324d4",
     CreatedByUserId: "affb4f68-ae4f-4118-9c4d-0b4aa97324d4",

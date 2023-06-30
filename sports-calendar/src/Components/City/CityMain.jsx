@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import City from './City';
 import CityById from './CityById';
-import CityDelete from './CityDelete';
 import CityPost from './CityPost';
-import CityPut from './CityPut';
+
 
 function CityDisplay() {
   const [isOpen, setIsOpen] = useState(true);
@@ -23,8 +22,6 @@ function CityDisplay() {
           <City />
           <CityById />
           <CityPost />
-          <CityPut />
-          <CityDelete />
         </div>
       )}
     </div>

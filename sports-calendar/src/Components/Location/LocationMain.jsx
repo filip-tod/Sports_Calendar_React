@@ -1,11 +1,16 @@
-import LocationGet from "./LocationGet";
-function LocationDisplay() {
+import LocationDisplay from "./LocationDisplay";
+import LocationPost from "./LocationPost";
+
+
+
+function LocationMain() {
   return (
       <div>
-        <LocationGet />
         <h1>Location CRUD for ADMIN</h1>
+         <LocationDisplay />
+         <LocationPost />
       </div>
 );
 }
 
-export default LocationDisplay;
+export default LocationMain;
