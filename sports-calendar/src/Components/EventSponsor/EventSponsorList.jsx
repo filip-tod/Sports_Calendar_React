@@ -79,8 +79,8 @@ function EventSponsorList({ currentEventId, isMainEditClicked }) {
 
   const openUpdateModal = (eventSponsor) => {
     setSelectedEventSponsor(eventSponsor.id);
-    setUpdateFormName(eventSponsor.name);
-    setUpdateFormWebsite(eventSponsor.website);
+    setUpdateFormName(eventSponsor.eventId);
+    setUpdateFormWebsite(eventSponsor.sponsorId);
     setShowUpdateForm(true);
   };
 
