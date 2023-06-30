@@ -102,7 +102,7 @@ function Event({ userInfo }) {
         fetchSports();
         console.log("event data");
         console.log(eventData);
-        console.log(userInfo.id);
+        console.log(userInfo.userId);
         setEvent(eventData);
         setStartDate(startDate.toLocaleDateString());
         setEndDate(endDate.toLocaleDateString());
@@ -132,7 +132,7 @@ function Event({ userInfo }) {
   }
   const canEditEvent =
     userInfo.role === "Super_admin" ||
-    (userInfo.role === "Organizer" && userInfo.Id === event.createdByUserId);
+    (userInfo.role === "Organizer" && userInfo.userId === event.createdByUserId);
   const handleEdit = (fieldName) => {
     setEditableFields((prevEditableFields) => ({
       ...prevEditableFields,
@@ -475,14 +475,10 @@ function Event({ userInfo }) {
       <h4 className="mt-4">Sponsors:</h4>
       <SponsorList
         eventId={eventId}
-        isMainEditClicked={isMainEditClicked.valueOf()}
-      />
-      {isMainEditClicked && <AddSponsorForm />}
-      <h4 className="mt-4">Event Sponsors:</h4>
-      <EventSponsorDisplay 
         currentEventId={eventId}
         isMainEditClicked={isMainEditClicked.valueOf()}
       />
+      {isMainEditClicked && <AddSponsorForm />}
     </Container>
   );
 }

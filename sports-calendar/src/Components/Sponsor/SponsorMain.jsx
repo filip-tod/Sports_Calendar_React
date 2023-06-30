@@ -35,6 +35,7 @@ function SponsorDisplay({ currentEventId, isMainEditClicked }) {
     <div className="sDisplayDiv">
       <SponsorList
         sponsors={sponsors}
+        currentEventId={currentEventId}
         isMainEditClicked={isMainEditClicked}
         fetchSponsors={fetchSponsors}
       />

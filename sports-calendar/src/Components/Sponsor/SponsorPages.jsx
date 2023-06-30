@@ -10,6 +10,7 @@ import {
   Input,
 } from "reactstrap";
 import SponsorService from "../../Services/SponsorService";
+import EventSponsorService from "../../Services/EventSponsorService";
 
 function SponsorList({ currentEventId, isMainEditClicked }) {
   const [sponsors, setSponsors] = useState([]);
@@ -25,12 +26,19 @@ function SponsorList({ currentEventId, isMainEditClicked }) {
 
   const fetchSponsors = async () => {
     try {
-      const response = await SponsorService.getSponsors();
+      const responseAllSponsors = await SponsorService.getSponsors();
+      const allSponsors = responseAllSponsors.data; 
+      const response = await EventSponsorService.getEventSponsors({eventId:currentEventId});
       const sponsorsData = response.data;
       const filteredSponsors = sponsorsData.filter(
         (sponsor) => sponsor.eventId === currentEventId
+      );  
+      const matchingSponsors = allSponsors.filter((sponsor) =>
+        filteredSponsors.some(
+          (filteredSponsor) => filteredSponsor.sponsorId === sponsor.id
+        )
       );
-      setSponsors(filteredSponsors);
+      setSponsors(matchingSponsors);
     } catch (error) {
       console.log(error);
     }
