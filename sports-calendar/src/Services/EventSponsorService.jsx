@@ -1,9 +1,8 @@
 import api from "../http-common";
 
-const getSponsors = () => {
-  return api.get("/EventSponsor");
+const getEventSponsors = (params) => {
+  return api.get("/EventSponsor", {params});
 };
-
 
 const createEventSponsor = (event) => {
   return api.post("/EventSponsor", event);
@@ -18,7 +17,7 @@ const removeEventSponsor = (id) => {
 };
 
 const EventSponsorService = {
-    getSponsors,
+    getEventSponsors,
   createEventSponsor,
   updateEventSponsor,
   removeEventSponsor

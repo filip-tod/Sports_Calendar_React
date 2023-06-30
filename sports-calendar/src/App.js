@@ -22,6 +22,7 @@ import "./Components/HomePage/calendarStyle.css";
 import Review from './Components/Review/Review';
 import PlacementDisplay from './Components/Placement/PlacementMain';
 import Users from './Components/Users/Users';
+import EventSponsorDisplay from './Components/EventSponsor/EventSponsorDisplay';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(
@@ -72,6 +73,7 @@ function App() {
         { path: "/Event/:eventId", element: <Event userInfo={userInfo} /> },
         { path: "/EventPost", element: <EventPost userInfo={userInfo} /> },
         { path: "Sponsor", element: <SponsorDisplay /> },
+        { path: "EventSponsor", element: <EventSponsorDisplay />}
       ],
     },
   ]);
