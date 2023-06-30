@@ -148,6 +148,11 @@ function PlacementPagedList({ updateList, currentEventId, isMainEditClicked }) {
   };
 
   const renderPlacements = () => {
+
+    if (placements === undefined) {
+      return <ListGroupItem className="square border border-2, text-center">No placements available</ListGroupItem>;
+    }
+
     return (
       <ListGroup className="text-center">
         {placements && placements.length > 0 ? (

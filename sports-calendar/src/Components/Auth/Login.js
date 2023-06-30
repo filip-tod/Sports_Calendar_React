@@ -28,7 +28,7 @@ const Login = (props) => {
 
     const nav = useNavigate();
 
-    const { token, setToken } = useToken();
+    const { setToken } = useToken();
 
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');

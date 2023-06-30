@@ -82,6 +82,10 @@ function Review({ isMainEditClicked }) {
       });
   };
 
+  if (reviews === undefined) {
+    return <ListGroupItem className="square border border-2, text-center">No reviews available</ListGroupItem>;
+  }
+
   return (
     <div>
       <ListGroup className="text-center">
