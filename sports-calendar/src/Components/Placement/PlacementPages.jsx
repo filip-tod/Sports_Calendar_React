@@ -150,7 +150,7 @@ function PlacementPagedList({ updateList, currentEventId, isMainEditClicked }) {
   const renderPlacements = () => {
     return (
       <ListGroup className="text-center">
-        {placements.length > 0 ? (
+        {placements && placements.length > 0 ? (
           placements.map((placement) => (
             <ListGroupItem key={placement.id} className="square border border-2">
               <p>Name: {placement.name}</p>

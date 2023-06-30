@@ -407,7 +407,8 @@ function Event({ userInfo }) {
         </Col>
         <Col className="bg-light border text-center align-items-center pt-4 p-4">
           <h4>Rating</h4>
-          <p>{event.rating}</p>
+          {event.rating?(<p>{event.rating}</p>):(<p>No ratings yet.</p>)}
+          
         </Col>
       </Row>
       <Row>
