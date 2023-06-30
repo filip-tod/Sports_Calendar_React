@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import PlacementService from '../../Services/PlacementService';
 
-function CreateForm({ setUpdateList, currentEventId }) {
+function CreateForm({ setUpdateList, currentEventId, userId }) {
   const [createFormName, setCreateFormName] = useState('');
   const [createFormFinishOrder, setCreateFormFinishOrder] = useState('');
+  console.log(userId);
 
   const handleCreateFormSubmit = async (e) => {
     e.preventDefault();
+    console.log();
 
     try {
       await PlacementService.createPlacement({
         name: createFormName,
         finishOrder: createFormFinishOrder,
         eventId: currentEventId,
+        createdByUserId: userId,
       });
 
       console.log('Placement created successfully.');

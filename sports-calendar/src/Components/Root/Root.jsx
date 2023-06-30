@@ -5,7 +5,7 @@ import PlacementDisplay from "../Placement/PlacementMain";
 function RootLayout(props){
   
   return <>
-     <NavBar setLoggedIn={ props.setLoggedIn } loggedIn={ props.loggedIn }/>
+     <NavBar setLoggedIn={ props.setLoggedIn } loggedIn={ props.loggedIn } />
      <Outlet />
         </>;
 };

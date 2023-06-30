@@ -102,7 +102,7 @@ function Event({ userInfo }) {
         fetchSports();
         console.log("event data");
         console.log(eventData);
-        console.log(userInfo.id);
+        console.log(userInfo.userId);
         setEvent(eventData);
         setStartDate(startDate.toLocaleDateString());
         setEndDate(endDate.toLocaleDateString());

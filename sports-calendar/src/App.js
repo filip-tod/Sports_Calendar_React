@@ -50,6 +50,8 @@ function App() {
     expires
   };
 
+  console.log(userInfo);
+
   const router = createBrowserRouter([
     {
       path: '',
