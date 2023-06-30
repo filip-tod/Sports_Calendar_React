@@ -22,6 +22,9 @@ import SponsorDisplay from "../Sponsor/SponsorMain";
 import SponsorList from "../Sponsor/SponsorPages";
 import ReviewPost from "../Review/ReviewPost";
 import CreateForm from "../Placement/PlacementPost";
+import AddSponsorForm from "../Sponsor/SponsorPost";
+import EventSponsorList from "../EventSponsor/EventSponsorList";
+import EventSponsorDisplay from "../EventSponsor/EventSponsorDisplay";
 
 function Event({ userInfo }) {
   const { eventId } = useParams();
@@ -473,8 +476,12 @@ function Event({ userInfo }) {
         eventId={eventId}
         isMainEditClicked={isMainEditClicked.valueOf()}
       />
-      {/* {isMainEditClicked && <EventSponsorPost />} */}
-      {/* potrebno napraviti EventSponsorPost komponentu i ubaciti ju ovdje te joj poslati event objekt ili samo id za event */}
+      {isMainEditClicked && <AddSponsorForm />}
+      <h4 className="mt-4">Event Sponsors:</h4>
+      <EventSponsorDisplay 
+        currentEventId={eventId}
+        isMainEditClicked={isMainEditClicked.valueOf()}
+      />
     </Container>
   );
 }

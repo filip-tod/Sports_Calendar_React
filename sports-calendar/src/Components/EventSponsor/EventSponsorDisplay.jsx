@@ -1,23 +1,13 @@
 import React from "react";
-import  EventSponsorList  from "./EventSponsorList";
-import CreateEventSponsorForm from "./EventSponsorPost";
-import { useState } from "react";
+import EventSponsorList from "./EventSponsorList";
+import EventSponsorPost from "./EventSponsorPost";
 
 function EventSponsorDisplay({ currentEventId, isMainEditClicked }) {
-  const [updateList, setUpdateList] = useState(false);
-
   return (
     <div className="sponsorDisplayDiv">
-      <EventSponsorList
-        currentEventId={currentEventId}
-        isMainEditClicked={isMainEditClicked}
-        updateList={updateList}
-      />
+      <EventSponsorList currentEventId={currentEventId} isMainEditClicked={isMainEditClicked} />
       {isMainEditClicked && (
-        <CreateEventSponsorForm
-          setUpdateList={setUpdateList}
-          currentEventId={currentEventId}
-        />
+        <EventSponsorPost currentEventId={currentEventId} />
       )}
     </div>
   );

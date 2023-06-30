@@ -95,6 +95,10 @@ function Example(props) {
                   Go To Users
                 </DropdownItem>
                 <DropdownItem divider />
+                <DropdownItem tag={Link} to="/EventSponsor">
+                  Event Sponsor
+                </DropdownItem>
+                <DropdownItem divider />
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>

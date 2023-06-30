@@ -11,8 +11,8 @@ import {
 } from "reactstrap";
 import EventSponsorService from "../../Services/EventSponsorService";
 
-function EventSponsorList({ isMainEditClicked, currentEventId }) {
-  const [eventSponsors, setEventSponsors] = useState(null);
+function EventSponsorList({ currentEventId, isMainEditClicked }) {
+  const [eventSponsors, setEventSponsors] = useState([]);
   const [selectedEventSponsor, setSelectedEventSponsor] = useState(null);
   const [updateFormName, setUpdateFormName] = useState("");
   const [updateFormWebsite, setUpdateFormWebsite] = useState("");
@@ -25,15 +25,14 @@ function EventSponsorList({ isMainEditClicked, currentEventId }) {
 
   const fetchEventSponsors = async () => {
     try {
-        const response = await EventSponsorService.getEventSponsors({
-          eventId: currentEventId
-        });
-        const eventSponsorsData = response.data;
-        console.log(eventSponsorsData);
-        setEventSponsors(eventSponsorsData);
-      } catch (error) {
-        console.log(error);
-      }
+      const response = await EventSponsorService.getEventSponsors({
+        eventId: currentEventId,
+      });
+      const eventSponsorsData = response.data;
+      setEventSponsors(eventSponsorsData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDeleteEventSponsor = async () => {
@@ -41,7 +40,9 @@ function EventSponsorList({ isMainEditClicked, currentEventId }) {
       const eventSponsorId = selectedEventSponsor;
       try {
         await EventSponsorService.removeEventSponsor(eventSponsorId);
-        console.log(`Event Sponsor with ID ${eventSponsorId} deleted successfully.`);
+        console.log(
+          `Event Sponsor with ID ${eventSponsorId} deleted successfully.`
+        );
         fetchEventSponsors();
         setSelectedEventSponsor(null);
       } catch (error) {
@@ -62,7 +63,9 @@ function EventSponsorList({ isMainEditClicked, currentEventId }) {
           eventSponsorId,
           updatedEventSponsor
         );
-        console.log(`Event Sponsor with ID ${eventSponsorId} updated successfully.`);
+        console.log(
+          `Event Sponsor with ID ${eventSponsorId} updated successfully.`
+        );
         setShowUpdateForm(false);
         setUpdateFormName("");
         setUpdateFormWebsite("");
@@ -87,42 +90,37 @@ function EventSponsorList({ isMainEditClicked, currentEventId }) {
   };
 
   const renderEventSponsors = () => {
-    return (
-      <ListGroup className="text-center">
-        {eventSponsors && eventSponsors.length > 0 ? (
-          eventSponsors.map((eventSponsor) => (
-            <ListGroupItem key={eventSponsor.id} className="square border border-2">
-              <p>Name: {eventSponsor.name}</p>
-              <p>Website: {eventSponsor.website}</p>
-              {/* <hr /> */}
-              {isMainEditClicked && (
-                <>
-                  <Button
-                    onClick={() => openUpdateModal(eventSponsor)}
-                    className="me-4"
-                  >
-                    Update
-                  </Button>
-                  <Button
-                    color="danger"
-                    onClick={() => deleteEventSponsor(eventSponsor.id)}
-                  >
-                    Delete
-                  </Button>
-                </>
-              )}
-            </ListGroupItem>
-          ))
-        ) : (
-          <ListGroupItem>No event sponsors available</ListGroupItem>
+    if (!eventSponsors || eventSponsors.length === 0) {
+      return <ListGroupItem>No event sponsors available</ListGroupItem>;
+    }
+
+    return eventSponsors.map((eventSponsor) => (
+      <ListGroupItem key={eventSponsor.id} className="square border border-2">
+        <p>EventId: {eventSponsor.eventId}</p>
+        <p>SponsorId: {eventSponsor.sponsorId}</p>
+        {isMainEditClicked && (
+          <>
+            <Button
+              onClick={() => openUpdateModal(eventSponsor)}
+              className="me-4"
+            >
+              Update
+            </Button>
+            <Button
+              color="danger"
+              onClick={() => deleteEventSponsor(eventSponsor.id)}
+            >
+              Delete
+            </Button>
+          </>
         )}
-      </ListGroup>
-    );
+      </ListGroupItem>
+    ));
   };
 
   return (
     <div>
-      {renderEventSponsors()}
+      <ListGroup className="text-center">{renderEventSponsors()}</ListGroup>
 
       <Modal isOpen={isModalOpen} toggle={() => setIsModalOpen(!isModalOpen)}>
         <ModalHeader>Delete Event Sponsor</ModalHeader>
