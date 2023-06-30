@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+
+#root {
+  background-size: cover; /* makes the image as large as possible so that the background area is completely covered by the image */
+  background-repeat: no-repeat; /* prevents the image from repeating */
+  background-position: center; /* centers the image within the element */
+  height: 100vh; /* optional: you can set the height of the root to be the full viewport height */
+  width: 100vw;
+}

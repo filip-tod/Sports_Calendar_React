@@ -1,6 +1,7 @@
 .calendar-container{
     width: 70%;
     margin: 48px auto;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 .react-calendar {
     width: 100%;
@@ -40,6 +41,7 @@
     margin: 0;
     border: 0;
     outline: none;
+    border-radius: 30%;
   }
   
   .react-calendar button:enabled:hover {
