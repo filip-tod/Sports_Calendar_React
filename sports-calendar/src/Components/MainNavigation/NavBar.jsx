@@ -20,7 +20,7 @@ import axios from 'axios';
 function Example(props) {
 
   const [isOpen, setIsOpen] = useState(false);
-
+  console.log(props.role);
   const toggle = () => setIsOpen(!isOpen);
 
   // navigate and logout handle Logout link onClick event
